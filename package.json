@@ -1,0 +1,20 @@
+{
+  "name": "farmacia_carton_pintado",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/hugoamedinao27-beep/FARMACIA_CARTON_PINTADO#readme",
+  "bugs": {
+    "url": "https://github.com/hugoamedinao27-beep/FARMACIA_CARTON_PINTADO/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugoamedinao27-beep/FARMACIA_CARTON_PINTADO.git"
+  },
+  "license": "ISC",
+  "author": "Hugo",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
