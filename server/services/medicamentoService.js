@@ -1,16 +1,14 @@
-// Importamos los modelos desde el index.js de la carpeta models
+// Importamos directamente el objeto db desde tu index.js de models
 const db = require('../models');
 
 const getAll = async () => {
-  // Usamos db.medicamento o db.Medicamento asegurando que encuentre el objeto
-  const modeloMedicamento = db.Medicamento || db.medicamento;
-  return await modeloMedicamento.findAll();
+  // Tu index ya guardó el modelo en db.Medicamento (con M mayúscula)
+  return await db.Medicamento.findAll();
 };
 
 const create = async (datosMedicamento) => {
-  // Aseguramos capturar el modelo sin importar si quedó en mayúscula o minúscula
-  const modeloMedicamento = db.Medicamento || db.medicamento;
-  return await modeloMedicamento.create(datosMedicamento);
+  // Usamos el modelo ya inicializado por tu index de forma limpia
+  return await db.Medicamento.create(datosMedicamento);
 };
 
 module.exports = { 
