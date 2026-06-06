@@ -1,27 +1,47 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); 
+
 const express = require('express');
 const cors = require('cors');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const authRoutes = require('./src/routes/authRoutes');
+const medicamentoRoutes = require('./src/routes/medicamentoRoutes');
+const ventaRoutes = require('./src/routes/ventaRoutes');
+const errorHandler = require('./src/middlewares/errorHandler');
+const db = require('./src/models'); 
 
-// 1. Middlewares para poder recibir y entender el JSON de Postman
-app.use(cors());
+const app = express();
+
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 
-// 2. Enlace real a las rutas que sí tienes creadas
-const medicamentoRoutes = require('./routes/medicamentoRoutes');
+// Inyección de Endpoints
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/medicamentos', medicamentoRoutes);
+app.use('/api/v1/ventas', ventaRoutes);
 
-// 3. Registrar tus rutas en el servidor
-// Esto hace que la URL en Postman sea: http://localhost:3000/api/medicamentos
-app.use('/api/medicamentos', medicamentoRoutes);
-
-// 4. Ruta base de cortesía por si abres el navegador
-app.get('/', (req, res) => {
-  res.send('¡Servidor de Farmacia Carton Pintado corriendo impecable! 🚀');
+// Fallback 404
+app.use((req, res) => {
+  res.status(404).json({ error: true, message: `Ruta ${req.originalUrl} no encontrada.` });
 });
 
-// 5. Encender el motor
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
-});
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 3000;
+const startServer = async () => {
+  try {
+    await db.sequelize.authenticate();
+    console.log('✅ Conexión a la base de datos establecida correctamente (GEN-03).');
+    
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor API corriendo en el puerto ${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Error de arranque:', error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
+
+module.exports = app;
