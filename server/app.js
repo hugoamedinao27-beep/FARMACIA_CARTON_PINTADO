@@ -12,22 +12,31 @@ const db = require('./src/models');
 
 const app = express();
 
-app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
+// 1. Configuración de CORS abierta para conectar Frontend y Backend sin bloqueos
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
-// Inyección de Endpoints
+// 2. Inyección de Endpoints de la API
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/medicamentos', medicamentoRoutes);
 app.use('/api/v1/ventas', ventaRoutes);
 
-// Fallback 404
+// Fallback 404 para rutas no existentes
 app.use((req, res) => {
   res.status(404).json({ error: true, message: `Ruta ${req.originalUrl} no encontrada.` });
 });
 
+// Middleware global de manejo de errores
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+// 3. Forzamos el puerto 4000 para que no choque con el puerto 3000 de Nuxt
+const PORT = 4000;
+
 const startServer = async () => {
   try {
     await db.sequelize.authenticate();

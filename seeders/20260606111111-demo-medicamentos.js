@@ -37,3 +37,26 @@ module.exports = {
     await queryInterface.bulkDelete('Medicamentos', null, {});
   }
 };
+
+const bcrypt = require('bcryptjs');
+
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    // Encriptamos la contraseña de forma segura antes de insertarla en MySQL
+    const hashedPassword = await bcrypt.hash('123456', 10);
+
+    await queryInterface.bulkInsert('Usuarios', [
+      {
+        name: 'Hugo Medina',
+        email: 'hugomedina@gmail.com',
+        password: hashedPassword, 
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {});
+  },
+
+  async down (queryInterface, Sequelize) {
+    await queryInterface.bulkDelete('Usuarios', null, {});
+  }
+};
