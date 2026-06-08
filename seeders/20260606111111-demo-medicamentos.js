@@ -42,7 +42,6 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    // Encriptamos la contraseña de forma segura antes de insertarla en MySQL
     const hashedPassword = await bcrypt.hash('123456', 10);
 
     await queryInterface.bulkInsert('Usuarios', [
