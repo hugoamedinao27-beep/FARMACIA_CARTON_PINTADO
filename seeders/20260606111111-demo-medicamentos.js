@@ -1,7 +1,21 @@
 'use strict';
 
+const bcrypt = require('bcryptjs');
+
 module.exports = {
   async up (queryInterface, Sequelize) {
+    const hashedPassword = await bcrypt.hash('123456', 10);
+
+    await queryInterface.bulkInsert('Users', [
+      {
+        name: 'Hugo Medina',
+        email: 'hugomedina@gmail.com',
+        password: hashedPassword,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {});
+
     await queryInterface.bulkInsert('Medicamentos', [
       {
         nombre: 'Paracetamol 500mg',
@@ -25,7 +39,7 @@ module.exports = {
         nombre: 'Ibuprofeno 400mg',
         precio: 1200.00,
         stock: 8,
-        stock_minimo: 15, // Provoca alerta de stock crítico inmediatamente
+        stock_minimo: 15,
         receta_obligatoria: false,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -34,28 +48,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    await queryInterface.bulkDelete('Users', null, {});
     await queryInterface.bulkDelete('Medicamentos', null, {});
-  }
-};
-
-const bcrypt = require('bcryptjs');
-
-module.exports = {
-  async up (queryInterface, Sequelize) {
-    const hashedPassword = await bcrypt.hash('123456', 10);
-
-    await queryInterface.bulkInsert('Usuarios', [
-      {
-        name: 'Hugo Medina',
-        email: 'hugomedina@gmail.com',
-        password: hashedPassword, 
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    ], {});
-  },
-
-  async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Usuarios', null, {});
   }
 };
