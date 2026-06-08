@@ -3,7 +3,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // 1. Tabla de Usuarios
     await queryInterface.createTable('Users', {
       id: {
         type: Sequelize.INTEGER,
@@ -36,7 +35,6 @@ module.exports = {
       }
     });
 
-    // 2. Tabla de Medicamentos
     await queryInterface.createTable('Medicamentos', {
       id: {
         type: Sequelize.INTEGER,
@@ -78,8 +76,6 @@ module.exports = {
         defaultValue: Sequelize.fn('NOW')
       }
     });
-
-    // 3. Tabla de Ventas
     await queryInterface.createTable('Ventas', {
       id: {
         type: Sequelize.INTEGER,
@@ -122,8 +118,6 @@ module.exports = {
         defaultValue: Sequelize.fn('NOW')
       }
     });
-
-    // 4. Tabla de DetalleVentas
     await queryInterface.createTable('DetalleVentas', {
       id: {
         type: Sequelize.INTEGER,

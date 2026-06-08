@@ -10,7 +10,7 @@ exports.getAll = async (req, res, next) => {
 
 exports.getAlertasStock = async (req, res, next) => {
   try {
-    // Alerta si el stock actual es menor o igual al stock mínimo parametrizado
+
     const criticos = await Medicamento.findAll({
       where: { stock: { [Op.lte]: sequelize.col('stock_minimo') } }
     });
