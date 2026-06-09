@@ -3,6 +3,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const authRoutes = require('./src/routes/authRoutes');
 const medicamentoRoutes = require('./src/routes/medicamentoRoutes');
@@ -12,14 +13,17 @@ const db = require('./src/models');
 
 const app = express();
 
-// 1. Configuración de CORS abierta para conectar Frontend y Backend sin bloqueos
+// 1. Configuración de CORS con credenciales para cookies
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5000';
 app.use(cors({
-  origin: '*', 
+  origin: CORS_ORIGIN,
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
+app.use(cookieParser());
 
 // 2. Inyección de Endpoints de la API
 app.use('/api/v1/auth', authRoutes);
@@ -34,13 +38,16 @@ app.use((req, res) => {
 // Middleware global de manejo de errores
 app.use(errorHandler);
 
-// 3. Forzamos el puerto 4000 para que no choque con el puerto 3000 de Nuxt
-const PORT = 4000;
+// 3. Puerto del servidor (por defecto 4000 para evitar conflicto con Nuxt)
+const PORT = process.env.PORT || 4000;
 
 const startServer = async () => {
   try {
     await db.sequelize.authenticate();
     console.log('✅ Conexión a la base de datos establecida correctamente (GEN-03).');
+
+    await db.sequelize.sync();
+    console.log('✅ Tablas sincronizadas con la base de datos.');
     
     app.listen(PORT, () => {
       console.log(`🚀 Servidor API corriendo en el puerto ${PORT}`);

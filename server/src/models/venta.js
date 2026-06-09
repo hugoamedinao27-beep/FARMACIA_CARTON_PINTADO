@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     numero_receta: { type: DataTypes.STRING, allowNull: true },
     total: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
     fecha: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
-  });
+  }, { tableName: 'Ventas' });
 
   Venta.associate = (models) => {
     Venta.belongsTo(models.User, { foreignKey: 'userId' });

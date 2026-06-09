@@ -23,6 +23,8 @@ module.exports = {
         stock: 50,
         stock_minimo: 10,
         receta_obligatoria: false,
+        categoria: 'Analgésico',
+        descripcion: 'Analgésico y antipirético de uso común.',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -32,6 +34,8 @@ module.exports = {
         stock: 20,
         stock_minimo: 5,
         receta_obligatoria: true,
+        categoria: 'Antibiótico',
+        descripcion: 'Antibiótico betalactámico para infecciones bacterianas.',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -41,6 +45,8 @@ module.exports = {
         stock: 8,
         stock_minimo: 15,
         receta_obligatoria: false,
+        categoria: 'Antiinflamatorio',
+        descripcion: 'Antiinflamatorio no esteroidal (AINE).',
         createdAt: new Date(),
         updatedAt: new Date()
       }

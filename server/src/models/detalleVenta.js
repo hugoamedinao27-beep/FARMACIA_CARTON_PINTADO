@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     medicamentoId: { type: DataTypes.INTEGER, allowNull: false },
     cantidad: { type: DataTypes.INTEGER, allowNull: false },
     precio_unitario: { type: DataTypes.DECIMAL(10, 2), allowNull: false }
-  }, { timestamps: true });
+  }, { timestamps: true, tableName: 'DetalleVentas' });
 
   DetalleVenta.associate = (models) => {
     DetalleVenta.belongsTo(models.Venta, { foreignKey: 'ventaId' });

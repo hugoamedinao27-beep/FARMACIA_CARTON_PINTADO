@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { User, PasswordResetToken } = require('../models');
 
 exports.register = async (req, res, next) => {
   try {
@@ -23,6 +24,67 @@ exports.login = async (req, res, next) => {
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '8h' });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 8 * 60 * 60 * 1000
+    });
+
     res.json({ success: true, token, user: { id: user.id, name: user.name } });
+  } catch (error) { next(error); }
+};
+
+exports.me = async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.user.id, { attributes: ['id', 'name', 'email'] });
+    if (!user) return res.status(404).json({ error: true, message: 'Usuario no encontrado.' });
+    res.json({ success: true, user });
+  } catch (error) { next(error); }
+};
+
+exports.forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: true, message: 'Email requerido.' });
+
+    const user = await User.findOne({ where: { email } });
+    if (!user) return res.status(404).json({ error: true, message: 'No existe una cuenta con ese email.' });
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+    await PasswordResetToken.create({ userId: user.id, token, expiresAt });
+
+    if (process.env.NODE_ENV === 'development') {
+      return res.json({ success: true, message: 'Token generado (dev).', resetToken: token });
+    }
+
+    res.json({ success: true, message: 'Si el email existe, recibirás instrucciones.' });
+  } catch (error) { next(error); }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  try {
+    const { token, password } = req.body;
+    if (!token || !password) return res.status(400).json({ error: true, message: 'Token y nueva contraseña requeridos.' });
+
+    const resetToken = await PasswordResetToken.findOne({ where: { token, used: false } });
+    if (!resetToken) return res.status(400).json({ error: true, message: 'Token inválido o ya utilizado.' });
+    if (new Date() > new Date(resetToken.expiresAt)) return res.status(400).json({ error: true, message: 'Token expirado.' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.update({ password: hashedPassword }, { where: { id: resetToken.userId } });
+    await resetToken.update({ used: true });
+
+    res.json({ success: true, message: 'Contraseña restablecida correctamente.' });
+  } catch (error) { next(error); }
+};
+
+exports.logout = async (req, res, next) => {
+  try {
+    res.clearCookie('token', { httpOnly: true, secure: false, sameSite: 'lax' });
+    res.json({ success: true, message: 'Sesión cerrada correctamente.' });
   } catch (error) { next(error); }
 };

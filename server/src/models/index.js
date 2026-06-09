@@ -17,6 +17,7 @@ db.User = require('./user')(sequelize, DataTypes);
 db.Medicamento = require('./medicamento')(sequelize, DataTypes);
 db.Venta = require('./venta')(sequelize, DataTypes);
 db.DetalleVenta = require('./detalleVenta')(sequelize, DataTypes);
+db.PasswordResetToken = require('./passwordresettoken')(sequelize, DataTypes);
 
 // Mapeo automático de relaciones estructurales
 Object.keys(db).forEach(modelName => {

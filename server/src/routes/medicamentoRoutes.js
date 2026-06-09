@@ -14,6 +14,9 @@ const medicamentoController = require('../controllers/medicamentoController');
 // GET -> /api/v1/medicamentos
 router.get('/', medicamentoController.obtenerMedicamentos);
 
+// Alerta de stock bajo
+router.get('/alertas-stock', medicamentoController.getAlertasStock);
+
 // 2. Crear un nuevo medicamento en el sistema
 // POST -> /api/v1/medicamentos
 router.post('/', medicamentoController.crearMedicamento);

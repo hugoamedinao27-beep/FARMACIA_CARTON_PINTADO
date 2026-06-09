@@ -1,0 +1,364 @@
+{
+  "info": {
+    "name": "Farmacia Cartón Pintado",
+    "description": "Colección oficial para la API de Farmacia Cartón Pintado. Incluye Auth, Medicamentos (CRUD + búsqueda), Ventas (transaccionales + reportes) y recuperación de contraseña.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.test('Usuario registrado exitosamente', () => pm.expect(pm.response.code).to.eql(201));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Operador Test\",\n  \"email\": \"test@farmacia.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    pm.test('Token guardado correctamente', () => pm.expect(json.token).to.not.be.empty);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hugomedina@gmail.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Me (Perfil Actual)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hugomedina@gmail.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"TOKEN_AQUI\",\n  \"password\": \"nueva123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "reset-password"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💊 Medicamentos",
+      "item": [
+        {
+          "name": "Listar Medicamentos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/medicamentos",
+              "host": ["{{baseUrl}}"],
+              "path": ["medicamentos"]
+            }
+          }
+        },
+        {
+          "name": "Buscar por Nombre",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/medicamentos?nombre=paraceta",
+              "host": ["{{baseUrl}}"],
+              "path": ["medicamentos"],
+              "query": [
+                { "key": "nombre", "value": "paraceta" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Alertas de Stock Bajo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/medicamentos/alertas-stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["medicamentos", "alertas-stock"]
+            }
+          }
+        },
+        {
+          "name": "Crear Medicamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ibuprofeno 400mg\",\n  \"precio\": 2500,\n  \"stock\": 100,\n  \"stock_minimo\": 10,\n  \"receta_obligatoria\": false,\n  \"categoria\": \"Antiinflamatorio\",\n  \"descripcion\": \"Antiinflamatorio no esteroidal\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/medicamentos",
+              "host": ["{{baseUrl}}"],
+              "path": ["medicamentos"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Medicamento",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"precio\": 3000,\n  \"stock\": 80\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/medicamentos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["medicamentos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Medicamento",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/medicamentos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["medicamentos", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Ventas",
+      "item": [
+        {
+          "name": "Crear Venta (Sin Receta)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productos\": [\n    { \"id\": 1, \"cantidad\": 2 },\n    { \"id\": 2, \"cantidad\": 1 }\n  ],\n  \"numero_receta\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ventas",
+              "host": ["{{baseUrl}}"],
+              "path": ["ventas"]
+            }
+          }
+        },
+        {
+          "name": "Crear Venta (Con Receta)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productos\": [\n    { \"id\": 3, \"cantidad\": 1 }\n  ],\n  \"numero_receta\": \"REC-2026-0042\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ventas",
+              "host": ["{{baseUrl}}"],
+              "path": ["ventas"]
+            }
+          }
+        },
+        {
+          "name": "Historial de Ventas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ventas/historial",
+              "host": ["{{baseUrl}}"],
+              "path": ["ventas", "historial"]
+            }
+          }
+        },
+        {
+          "name": "Reporte de Ventas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ventas/reporte",
+              "host": ["{{baseUrl}}"],
+              "path": ["ventas", "reporte"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚡ Casos de Error",
+      "item": [
+        {
+          "name": "401 - Sin Token (Me)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "400 - Datos Inválidos (Register)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"email\": \"no-es-email\",\n  \"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "409 - Stock Insuficiente",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productos\": [\n    { \"id\": 1, \"cantidad\": 99999 }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ventas",
+              "host": ["{{baseUrl}}"],
+              "path": ["ventas"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -62,6 +62,23 @@ exports.createVenta = async (req, res, next) => {
   }
 };
 
+exports.getReporte = async (req, res, next) => {
+  try {
+    const { Op } = require('sequelize');
+    const totalVentas = await Venta.count();
+    const ingresos = await Venta.sum('total') || 0;
+    const ventasConReceta = await Venta.count({ where: { numero_receta: { [Op.ne]: null } } });
+    const medicamentosMasVendidos = await DetalleVenta.findAll({
+      attributes: ['medicamentoId', [require('sequelize').fn('SUM', require('sequelize').col('cantidad')), 'total_vendido']],
+      group: ['medicamentoId'],
+      include: [{ model: Medicamento, attributes: ['nombre'] }],
+      order: [[require('sequelize').literal('total_vendido'), 'DESC']],
+      limit: 5
+    });
+    res.json({ totalVentas, ingresos: parseFloat(ingresos), ventasConReceta, medicamentosMasVendidos });
+  } catch (error) { next(error); }
+};
+
 exports.getHistorial = async (req, res, next) => {
   try {
     const historial = await Venta.findAll({
