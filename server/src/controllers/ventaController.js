@@ -64,18 +64,53 @@ exports.createVenta = async (req, res, next) => {
 
 exports.getReporte = async (req, res, next) => {
   try {
-    const { Op } = require('sequelize');
+    const { Op, fn, col, literal } = require('sequelize');
+
     const totalVentas = await Venta.count();
-    const ingresos = await Venta.sum('total') || 0;
+    const ingresos = parseFloat(await Venta.sum('total') || 0);
     const ventasConReceta = await Venta.count({ where: { numero_receta: { [Op.ne]: null } } });
+
+    const totalUnidadesVendidas = await DetalleVenta.sum('cantidad') || 0;
+
+    const ventaPromedio = totalVentas > 0 ? ingresos / totalVentas : 0;
+
+    const productosDistintosVendidos = await DetalleVenta.count({
+      distinct: true,
+      col: 'medicamentoId'
+    });
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const manana = new Date(hoy);
+    manana.setDate(manana.getDate() + 1);
+
+    const ventasHoy = await Venta.count({
+      where: { fecha: { [Op.gte]: hoy, [Op.lt]: manana } }
+    });
+
+    const ingresosHoy = parseFloat(await Venta.sum('total', {
+      where: { fecha: { [Op.gte]: hoy, [Op.lt]: manana } }
+    }) || 0);
+
     const medicamentosMasVendidos = await DetalleVenta.findAll({
-      attributes: ['medicamentoId', [require('sequelize').fn('SUM', require('sequelize').col('cantidad')), 'total_vendido']],
+      attributes: ['medicamentoId', [fn('SUM', col('cantidad')), 'total_vendido']],
       group: ['medicamentoId'],
-      include: [{ model: Medicamento, attributes: ['nombre'] }],
-      order: [[require('sequelize').literal('total_vendido'), 'DESC']],
+      include: [{ model: Medicamento, as: 'medicamento', attributes: ['nombre'] }],
+      order: [[literal('total_vendido'), 'DESC']],
       limit: 5
     });
-    res.json({ totalVentas, ingresos: parseFloat(ingresos), ventasConReceta, medicamentosMasVendidos });
+
+    res.json({
+      totalVentas,
+      ingresos,
+      ventasConReceta,
+      totalUnidadesVendidas,
+      ventaPromedio: Math.round(ventaPromedio * 100) / 100,
+      productosDistintosVendidos,
+      ventasHoy,
+      ingresosHoy,
+      medicamentosMasVendidos
+    });
   } catch (error) { next(error); }
 };
 
