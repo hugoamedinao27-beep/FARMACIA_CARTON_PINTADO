@@ -77,6 +77,18 @@
           </div>
         </div>
       </div>
+
+      <div class="employee-section">
+        <h2 class="employee-title">Trabajador del Mes</h2>
+        <div class="employee-card">
+          <img src="/images/hugoperro.jpeg" class="employee-photo" alt="Hugo Medina" />
+          <div class="employee-info">
+            <h3 class="employee-name">Hugo Medina</h3>
+            <p class="employee-role">Farmacéutico Encargado</p>
+            <p class="employee-reason">Elegido por su dedicación y compromiso con la atención al cliente, manteniendo siempre un ambiente de confianza y profesionalismo en la farmacia.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -331,9 +343,64 @@ onMounted(async () => {
   color: var(--text-main);
 }
 
+.employee-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.employee-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 1rem 0;
+}
+
+.employee-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.employee-photo {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 3px solid #ccfbf1;
+}
+
+.employee-info { flex: 1; }
+
+.employee-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.15rem 0;
+}
+
+.employee-role {
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.employee-reason {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.5;
+}
+
 @media (max-width: 600px) {
   .about-wrapper { padding: 1rem; }
   .about-top { flex-direction: column; text-align: center; }
   .about-info-grid { grid-template-columns: 1fr; }
+  .employee-card { flex-direction: column; text-align: center; }
 }
 </style>
