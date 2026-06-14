@@ -59,7 +59,7 @@
           <img src="/images/phone.svg" class="about-info-icon" alt="Teléfono" />
           <div>
             <span class="about-info-label">Teléfono</span>
-            <span class="about-info-value">+56 9 XXXX XXXX</span>
+            <span class="about-info-value">+56 9 9375 1234</span>
           </div>
         </div>
         <div class="about-info-item">
@@ -73,7 +73,7 @@
           <img src="/images/envelope.svg" class="about-info-icon" alt="Email" />
           <div>
             <span class="about-info-label">Email</span>
-            <span class="about-info-value">contacto@farmaciacartonpintado.cl</span>
+            <span class="about-info-value">hugoamedinao27@gmail.com</span>
           </div>
         </div>
       </div>
