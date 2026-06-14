@@ -2,6 +2,54 @@
 
 Sistema completo de gestión para farmacia con inventario, ventas, autenticación JWT y control de recetas médicas.
 
+## Alcance
+
+Sistema de gestión farmacéutica que cubre: inventario de medicamentos (CRUD + alertas de stock bajo), ventas transaccionales con validación de stock y control de recetas, autenticación de usuarios mediante JWT, reportes de ventas, filtros de búsqueda, y restablecimiento de contraseña. Incluye API REST documentada y frontend SPA en Nuxt 4. Desplegado en Railway (backend) y Vercel (frontend).
+
+## Cronograma
+
+| Hito | Fecha estimada | Entregable |
+|------|---------------|------------|
+| Hito 0 | Semana 1 | Repositorio con estructura client/ + API, README, informe de inicio |
+| Hito 1 | Semana 3–4 | ≥ 5/23 requisitos, GEN-01 a GEN-03, rq-01 y rq-02 |
+| Hito 2 | Semana 6–7 | ≥ 10/23 requisitos, Auth completo (API+WEB), 1 flujo de dominio en UI, Postman |
+| Hito 3 | Semana 10 | 23/23 requisitos, frontend completo, API + Railway, front público, README ejecutable, demo web |
+
+## Matriz de Requisitos
+
+### GEN — Requisitos generales
+
+| ID | Requisito | Estado | [WEB] |
+|----|-----------|--------|-------|
+| GEN-01 | README con descripción, stack, instalación, variables, ejecución + .gitignore + estructura client/ + API | ✅ | — |
+| GEN-02 | Variables de entorno (.env.example) y documentación para local y producción | ✅ | — |
+| GEN-03 | Migraciones Sequelize funcionales (3 migraciones: tablas, reset tokens, categoria/descripcion) | ✅ | — |
+| GEN-04 | Registro de usuario con contraseña hasheada + pantalla de registro | ✅ | ✅ |
+| GEN-05 | Login con JWT + cookie httpOnly + pantalla de login | ✅ | ✅ |
+| GEN-06 | Middleware de autenticación en rutas protegidas (401 sin token, 403 expirado) | ✅ | — |
+| GEN-07 | Restablecimiento de contraseña con token + páginas forgot/reset | ✅ | ✅ |
+| GEN-08 | Manejo centralizado de errores (404, 500 sin stack trace, 400/422 validaciones) | ✅ | — |
+| GEN-09 | CRUD REST + pantallas web para el dominio (medicamentos, ventas, usuarios) | ✅ | ✅ |
+| GEN-10 | Validaciones de entrada con códigos HTTP apropiados (400, 409 email duplicado) | ✅ | — |
+| GEN-11 | Colección Postman con auth automatizable y casos de error | ✅ | — |
+| GEN-12 | Evolución de esquema documentada (migración categoria/descripcion) | ✅ | — |
+| GEN-13 | Despliegue en Railway (API) + Vercel (frontend) con CORS y variables de entorno | ⚠️ (caído) | — |
+
+### rq — Requisitos del proyecto
+
+| ID | Requisito | Estado | [WEB] |
+|----|-----------|--------|-------|
+| rq-01 | Login y logout de usuarios con JWT | ✅ | ✅ |
+| rq-02 | CRUD de medicamentos (inventario) | ✅ | ✅ |
+| rq-03 | CRUD de ventas con validación de stock y control de recetas | ✅ | ✅ |
+| rq-04 | Middleware de autenticación en rutas protegidas | ✅ | — |
+| rq-05 | Reporte de ventas con métricas (ingresos, top 5, ventas hoy, etc.) | ✅ | ✅ |
+| rq-06 | CRUD de usuarios (registro, perfil) | ✅ | ✅ |
+| rq-07 | Filtros de búsqueda en backend (`?nombre=`, `?stockMin=`) | ✅ | ✅ |
+| rq-08 | Despliegue de API en Railway | ⚠️ (caído) | — |
+| rq-09 | Interfaz web con Vue.js / Nuxt | ✅ | ✅ |
+| rq-10 | Manejo de errores en frontend y backend | ✅ | ✅ |
+
 ## Stack Tecnológico
 
 | Capa | Tecnología |
