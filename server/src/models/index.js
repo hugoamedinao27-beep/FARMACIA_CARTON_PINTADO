@@ -1,12 +1,22 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const config = require('../../../config/config.js').development;
+const env = process.env.NODE_ENV || 'development';
+const config = require('../../../config/config.js')[env];
 
-const sequelize = new Sequelize(config.database, config.username, config.password, {
-  host: config.host,
-  port: config.port,
-  dialect: config.dialect,
-  logging: false
-});
+let sequelize;
+if (config.url) {
+  sequelize = new Sequelize(config.url, {
+    dialect: config.dialect,
+    dialectOptions: config.dialectOptions,
+    logging: false
+  });
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.host,
+    port: config.port,
+    dialect: config.dialect,
+    logging: false
+  });
+}
 
 const db = {};
 db.Sequelize = Sequelize;

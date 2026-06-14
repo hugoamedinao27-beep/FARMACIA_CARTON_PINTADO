@@ -49,7 +49,7 @@ npm run dev
 
 ## Variables de Entorno
 
-Crear archivo `.env` en la raíz del proyecto:
+Crear archivo `.env` en la raíz del proyecto (ver `.env.example`):
 
 ```env
 # Base de datos
@@ -65,6 +65,14 @@ NODE_ENV=development
 JWT_SECRET=ClaveSecretaFarmacia2026
 CORS_ORIGIN=http://localhost:5000
 ```
+
+| Variable | Local (`.env`) | Producción (Railway) |
+|----------|---------------|---------------------|
+| `DATABASE_URL` | Opcional (usar DB_* en su lugar) | Connection string MySQL |
+| `DB_USER`, `DB_PASSWORD`, etc. | Obligatorias | No usadas (usar DATABASE_URL) |
+| `JWT_SECRET` | Obligatoria | Obligatoria |
+| `CORS_ORIGIN` | `http://localhost:5000` | URL del front en Vercel |
+| `NUXT_PUBLIC_API_BASE` | No necesaria en desarrollo | URL de la API en Railway |
 
 ## Ejecución
 
@@ -141,9 +149,21 @@ cd client && npm run dev
 
 ### Backend (Railway)
 - URL: https://farmacia-carton-pintado-production.up.railway.app
+- Las variables de entorno se configuran en el panel de Railway (Settings → Variables), NO en archivo `.env`.
+- Ejecutar migraciones en producción: `NODE_ENV=production npm run migrate`
 
 ### Frontend (Vercel)
 - URL: https://farmacia-carton-pintado.vercel.app
+- Variable `NUXT_PUBLIC_API_BASE` configurada en el panel de Vercel apuntando a la URL de la API.
+- CORS configurado en backend para aceptar peticiones desde el front desplegado.
+
+## Cambios de esquema (GEN-12)
+
+### AC: Agregar categoría y descripción a Medicamentos
+- **Migración**: `20260608000000-add-categoria-descripcion-to-medicamentos.js`
+- **Motivo**: Clasificar medicamentos por categoría y agregar descripción detallada para mejor identificación.
+- **Campos agregados**: `categoria VARCHAR(100)`, `descripcion TEXT`
+- **Impacto**: API retorna los nuevos campos; UI los muestra en tarjetas y formularios.
 
 ## Autor
 
