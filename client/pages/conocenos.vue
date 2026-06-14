@@ -79,13 +79,14 @@
       </div>
 
       <div class="employee-section">
-        <h2 class="employee-title">Trabajador del Mes</h2>
-        <div class="employee-card">
+        <h2 class="employee-title">Trabajadores del Mes</h2>
+        <div v-for="emp in empleados" :key="emp.titulo" class="employee-card">
           <img src="/images/hugoperro.jpeg" class="employee-photo" alt="Hugo Medina" />
           <div class="employee-info">
-            <h3 class="employee-name">Hugo Medina</h3>
-            <p class="employee-role">Farmacéutico Encargado</p>
-            <p class="employee-reason">Elegido por su dedicación y compromiso con la atención al cliente, manteniendo siempre un ambiente de confianza y profesionalismo en la farmacia.</p>
+            <span class="employee-badge">{{ emp.titulo }}</span>
+            <h3 class="employee-name">{{ emp.nombre }}</h3>
+            <p class="employee-role">{{ emp.rol }}</p>
+            <p class="employee-reason">{{ emp.razon }}</p>
           </div>
         </div>
       </div>
@@ -100,6 +101,27 @@ const apiBase = useApiBase()
 
 const router = useRouter()
 const usuarioActivo = ref('Operador')
+
+const empleados = [
+  {
+    titulo: 'Este Mes',
+    nombre: 'Hugo Medina',
+    rol: 'Farmacéutico Encargado',
+    razon: 'Elegido por su dedicación y compromiso con la atención al cliente, manteniendo siempre un ambiente de confianza y profesionalismo en la farmacia.'
+  },
+  {
+    titulo: 'Mes Antepasado',
+    nombre: 'Hugo Medina',
+    rol: 'Farmacéutico Encargado',
+    razon: 'Reconocido por su excelente gestión del inventario y su capacidad para resolver problemas complejos de los pacientes.'
+  },
+  {
+    titulo: 'Mes Ante Antepasado',
+    nombre: 'Hugo Medina',
+    rol: 'Farmacéutico Encargado',
+    razon: 'Destacó por su liderazgo en la implementación del nuevo sistema de ventas y la capacitación del equipo.'
+  }
+]
 
 const itemsEnCarrito = computed(() => {
   const carrito = JSON.parse(sessionStorage.getItem('carrito') || '[]')
@@ -363,7 +385,10 @@ onMounted(async () => {
   background-color: #f9fafb;
   border-radius: 14px;
   padding: 1.25rem;
+  margin-bottom: 0.75rem;
 }
+
+.employee-card:last-child { margin-bottom: 0; }
 
 .employee-photo {
   width: 6.5rem;
@@ -375,6 +400,19 @@ onMounted(async () => {
 }
 
 .employee-info { flex: 1; }
+
+.employee-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: #ccfbf1;
+  color: var(--primary-hover);
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  margin-bottom: 0.35rem;
+}
 
 .employee-name {
   font-size: 1.1rem;
