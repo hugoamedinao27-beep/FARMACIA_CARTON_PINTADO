@@ -113,6 +113,14 @@
             </div>
 
             <button
+              @click="router.push('/medicamento/' + med.id)"
+              class="btn-detail-card"
+              title="Ver detalle"
+            >
+              <img src="/images/information-circle.svg" class="icon-img" alt="" style="width:0.85rem;height:0.85rem;vertical-align:middle;margin-right:0.2rem;" /> Ver detalle
+            </button>
+
+            <button
               @click="agregarAlCarrito(med)"
               :disabled="med.stock <= 0"
               class="btn-action-add-card"
@@ -713,6 +721,10 @@ const cerrarSesion = async () => {
 
 .btn-action-add-card:hover:not(:disabled) { background-color: var(--primary-hover); }
 .btn-action-add-card:disabled { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+
+.btn-detail-card { width: 100%; background-color: #f3f4f6; color: var(--text-main); border: 1px solid var(--border-color); padding: 0.65rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.15s ease; }
+
+.btn-detail-card:hover { background-color: #e5e7eb; border-color: #d1d5db; }
 
 .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
 .badge-success { background-color: #d1fae5; color: #065f46; }

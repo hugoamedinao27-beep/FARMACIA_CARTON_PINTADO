@@ -17,6 +17,9 @@ router.get('/', medicamentoController.obtenerMedicamentos);
 // Alerta de stock bajo
 router.get('/alertas-stock', medicamentoController.getAlertasStock);
 
+// Obtener un medicamento por ID
+router.get('/:id', medicamentoController.obtenerMedicamentoPorId);
+
 // 2. Crear un nuevo medicamento en el sistema
 // POST -> /api/v1/medicamentos
 router.post('/', medicamentoController.crearMedicamento);

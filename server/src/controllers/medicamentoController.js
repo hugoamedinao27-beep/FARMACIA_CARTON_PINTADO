@@ -16,6 +16,17 @@ exports.obtenerMedicamentos = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
+exports.obtenerMedicamentoPorId = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const medicamento = await Medicamento.findByPk(id);
+    if (!medicamento) {
+      return res.status(404).json({ error: true, message: 'Medicamento no encontrado.' });
+    }
+    res.json(medicamento);
+  } catch (error) { next(error); }
+};
+
 exports.getAlertasStock = async (req, res, next) => {
   try {
     const criticos = await Medicamento.findAll({
