@@ -320,7 +320,7 @@ const cerrarSesion = async () => {
 
 .carousel-img {
   width: 100%;
-  height: 300px;
+  height: 400px;
   object-fit: cover;
   display: block;
 }
@@ -395,7 +395,7 @@ const cerrarSesion = async () => {
 }
 
 @media (max-width: 600px) {
-  .carousel-img { height: 200px; }
+  .carousel-img { height: 280px; }
   .carousel-btn { width: 2rem; height: 2rem; font-size: 1.2rem; }
   .carousel-label { font-size: 0.9rem; padding: 0.75rem; }
   .carousel-dots { bottom: 2.8rem; }
