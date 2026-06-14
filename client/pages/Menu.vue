@@ -20,6 +20,26 @@
       </div>
     </header>
 
+    <div class="carousel" @mouseenter="pausar" @mouseleave="reanudar">
+      <div class="carousel-track" :style="{ transform: `translateX(-${indice * 100}%)` }">
+        <div v-for="(img, i) in imagenes" :key="i" class="carousel-slide">
+          <img :src="img.src" :alt="img.label" class="carousel-img" />
+          <div class="carousel-label">{{ img.label }}</div>
+        </div>
+      </div>
+      <button class="carousel-btn carousel-prev" @click="anterior">‹</button>
+      <button class="carousel-btn carousel-next" @click="siguiente">›</button>
+      <div class="carousel-dots">
+        <span
+          v-for="(img, i) in imagenes"
+          :key="i"
+          class="carousel-dot"
+          :class="{ active: i === indice }"
+          @click="indice = i"
+        ></span>
+      </div>
+    </div>
+
     <div class="menu-grid">
       <div @click="irACatalogo" class="menu-card">
         <img src="/images/pill.svg" class="menu-card-icon icon-img" alt="Medicamentos" />
@@ -52,14 +72,43 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 const apiBase = useApiBase()
 
 const router = useRouter()
 const usuarioActivo = ref('Operador')
+const indice = ref(0)
+const intervalo = ref(null)
+
+const imagenes = [
+  { src: '/images/pepito.jpeg', label: 'Farmacia Cartón Pintado' },
+  { src: '/images/hugoperro.jpeg', label: 'Nuestro Equipo' },
+  { src: '/images/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg.webp', label: 'Compromiso con tu Salud' }
+]
+
+const avanzar = () => {
+  indice.value = (indice.value + 1) % imagenes.length
+}
+
+const anterior = () => {
+  indice.value = (indice.value - 1 + imagenes.length) % imagenes.length
+}
+
+const siguiente = () => {
+  indice.value = (indice.value + 1) % imagenes.length
+}
+
+const pausar = () => {
+  if (intervalo.value) clearInterval(intervalo.value)
+}
+
+const reanudar = () => {
+  intervalo.value = setInterval(avanzar, 4000)
+}
 
 onMounted(async () => {
+  intervalo.value = setInterval(avanzar, 4000)
   let token = sessionStorage.getItem('token')
 
   if (!token) {
@@ -83,6 +132,10 @@ onMounted(async () => {
   if (nombreGuardado) {
     usuarioActivo.value = nombreGuardado
   }
+})
+
+onUnmounted(() => {
+  if (intervalo.value) clearInterval(intervalo.value)
 })
 
 const irACatalogo = () => {
@@ -244,5 +297,107 @@ const cerrarSesion = async () => {
 
 .menu-card:hover .menu-card-btn {
   background-color: var(--primary-hover);
+}
+
+.carousel {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  position: relative;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.85);
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #374151;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.carousel:hover .carousel-btn {
+  opacity: 1;
+}
+
+.carousel-prev { left: 0.75rem; }
+.carousel-next { right: 0.75rem; }
+
+.carousel-btn:hover {
+  background: white;
+  color: var(--primary);
+}
+
+.carousel-dots {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+}
+
+.carousel-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.carousel-dot.active {
+  background: white;
+  transform: scale(1.3);
+}
+
+@media (max-width: 600px) {
+  .carousel-img { height: 200px; }
+  .carousel-btn { width: 2rem; height: 2rem; font-size: 1.2rem; }
+  .carousel-label { font-size: 0.9rem; padding: 0.75rem; }
+  .carousel-dots { bottom: 2.8rem; }
 }
 </style>
