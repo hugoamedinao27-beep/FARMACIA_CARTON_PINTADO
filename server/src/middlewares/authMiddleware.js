@@ -10,7 +10,10 @@ module.exports = (req, res, next) => {
   }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET || 'ClaveSecretaEstiloFarmaciaCartonPintado2026!');
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ error: true, message: 'Error del servidor: JWT_SECRET no configurado.' });
+    }
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verified;
     next();
   } catch (err) {

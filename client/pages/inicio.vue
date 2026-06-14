@@ -362,7 +362,7 @@ const guardarCambiosMedicamiento = async () => {
 }
 
 const eliminarMedicamento = async (id) => {
-  const confirmar = confirm('⚠️ ¿Está seguro de que desea eliminar este fármaco permanentemente del sistema?')
+  const confirmar = confirm('¿Está seguro de que desea eliminar este fármaco permanentemente del sistema?')
   if (!confirmar) return
 
   guardando.value = true

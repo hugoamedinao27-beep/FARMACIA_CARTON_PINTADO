@@ -145,6 +145,18 @@ cd client && npm run dev
 - [x] Guardia de autenticación por página
 - [x] Colección Postman para testing
 
+## Flujo de Restablecimiento de Contraseña
+
+1. El usuario hace clic en "¿Olvidaste tu contraseña?" en la pantalla de login.
+2. Ingresa su email en el formulario (`forgot-password.vue`) → `POST /auth/forgot-password`.
+3. **Backend**: Si el email existe, genera un token de 32 bytes aleatorio con expiración de 1 hora y lo guarda en `password_reset_tokens`. **Siempre responde 200** (sin revelar si el email existe).
+4. En **development**, el token se muestra en la consola del backend (`[DEV] Reset token para ...: ...`).
+5. En **producción**, el token se enviaría por email (implementación de servicio de correo pendiente).
+6. El usuario abre la página de restablecimiento (con el token en la URL) → `reset-password.vue`.
+7. Ingresa su nueva contraseña → `POST /auth/reset-password`.
+8. Backend verifica token vigente, actualiza la contraseña y marca el token como usado.
+9. El usuario redirige al login para iniciar sesión con la nueva contraseña.
+
 ## Deploy
 
 ### Backend (Railway)
