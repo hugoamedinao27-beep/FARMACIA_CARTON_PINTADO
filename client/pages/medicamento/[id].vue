@@ -391,17 +391,17 @@ onMounted(async () => {
 }
 
 .detail-icon {
-  width: 4rem;
-  height: 4rem;
+  width: 7rem;
+  height: 7rem;
   background-color: #ccfbf1;
-  border-radius: 14px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.detail-pill-icon { width: 2.2rem; height: 2.2rem; opacity: 0.8; }
+.detail-pill-icon { width: 4rem; height: 4rem; opacity: 0.85; }
 
 .detail-titles { display: flex; flex-direction: column; gap: 0.35rem; }
 
