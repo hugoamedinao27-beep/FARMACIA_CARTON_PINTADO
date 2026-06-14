@@ -366,8 +366,8 @@ onMounted(async () => {
 }
 
 .employee-photo {
-  width: 5rem;
-  height: 5rem;
+  width: 6.5rem;
+  height: 6.5rem;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
