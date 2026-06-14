@@ -4,5 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   devServer: {
     port: 5000 
+  },
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost:4000/api/v1'
+    }
   }
 })

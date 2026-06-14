@@ -108,6 +108,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router' 
+const apiBase = useApiBase()
 
 const router = useRouter() 
 const name = ref('')
@@ -137,7 +138,7 @@ const handleSubmit = async () => {
   
   // Definir la URL dinámicamente según el modo en el que se encuentre el usuario
   const endpoint = isRegister.value ? 'register' : 'login'
-  const url = `http://localhost:4000/api/v1/auth/${endpoint}`
+  const url = `${apiBase}/auth/${endpoint}`
 
   try {
     const response = await fetch(url, {

@@ -128,6 +128,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+const apiBase = useApiBase()
 
 const router = useRouter()
 const carrito = ref([])
@@ -145,7 +146,7 @@ onMounted(async () => {
 
   if (!token) {
     try {
-      const res = await fetch('http://localhost:4000/api/v1/auth/me', { credentials: 'include' })
+      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
       if (res.ok) {
         const data = await res.json()
         token = 'restored'
@@ -225,7 +226,7 @@ const procesarVentaTransaccional = async () => {
   }
 
   try {
-    const res = await fetch('http://localhost:4000/api/v1/ventas', {
+    const res = await fetch(`${apiBase}/ventas`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -249,7 +250,7 @@ const procesarVentaTransaccional = async () => {
 
 const cerrarSesion = async () => {
   try {
-    await fetch('http://localhost:4000/api/v1/auth/logout', { method: 'POST', credentials: 'include' })
+    await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' })
   } catch (_) { }
   sessionStorage.clear()
   router.push('/')

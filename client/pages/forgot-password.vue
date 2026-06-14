@@ -58,6 +58,7 @@
 
 <script setup>
 import { ref } from 'vue'
+const apiBase = useApiBase()
 
 const email = ref('')
 const loading = ref(false)
@@ -72,7 +73,7 @@ const handleForgotPassword = async () => {
   resetToken.value = ''
 
   try {
-    const res = await fetch('http://localhost:4000/api/v1/auth/forgot-password', {
+    const res = await fetch(`${apiBase}/auth/forgot-password`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value })

@@ -125,6 +125,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+const apiBase = useApiBase()
 
 const router = useRouter()
 const usuarioActivo = ref('Operador')
@@ -155,7 +156,7 @@ const cargarReportes = async () => {
 
   if (!token) {
     try {
-      const res = await fetch('http://localhost:4000/api/v1/auth/me', { credentials: 'include' })
+      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
       if (res.ok) {
         const data = await res.json()
         token = 'restored'
@@ -174,7 +175,7 @@ const cargarReportes = async () => {
   if (nombreGuardado) usuarioActivo.value = nombreGuardado
 
   try {
-    const res = await fetch('http://localhost:4000/api/v1/ventas/reporte', { credentials: 'include' })
+    const res = await fetch(`${apiBase}/ventas/reporte`, { credentials: 'include' })
     if (!res.ok) {
       const data = await res.json().catch(() => ({}))
       throw new Error(data.message || `Error del servidor (${res.status})`)
@@ -193,7 +194,7 @@ const irAlMenu = () => router.push('/menu')
 const irAlInicio = () => router.push('/inicio')
 
 const cerrarSesion = async () => {
-  try { await fetch('http://localhost:4000/api/v1/auth/logout', { method: 'POST', credentials: 'include' }) } catch (_) { }
+  try { await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' }) } catch (_) { }
   sessionStorage.clear()
   router.push('/')
 }

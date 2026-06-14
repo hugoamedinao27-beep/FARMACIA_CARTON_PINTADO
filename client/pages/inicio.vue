@@ -213,6 +213,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+const apiBase = useApiBase()
 
 const router = useRouter()
 const medicamentos = ref([])
@@ -237,7 +238,7 @@ const medEditando = ref({
 
 const obtenerMedicamentos = async () => {
   try {
-    const res = await fetch('http://localhost:4000/api/v1/medicamentos', { credentials: 'include' })
+    const res = await fetch(`${apiBase}/medicamentos`, { credentials: 'include' })
     if (!res.ok) throw new Error('Error al obtener el catálogo')
     const data = await res.json()
     
@@ -256,7 +257,7 @@ onMounted(async () => {
 
   if (!token) {
     try {
-      const res = await fetch('http://localhost:4000/api/v1/auth/me', { credentials: 'include' })
+      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
       if (res.ok) {
         const data = await res.json()
         token = 'restored'
@@ -330,8 +331,8 @@ const cerrarEditor = () => {
 const guardarCambiosMedicamiento = async () => {
   guardando.value = true
   const url = esModoEdicion.value
-    ? `http://localhost:4000/api/v1/medicamentos/${medEditando.value.id}`
-    : 'http://localhost:4000/api/v1/medicamentos'
+    ? `${apiBase}/medicamentos/${medEditando.value.id}`
+    : `${apiBase}/medicamentos`
 
   const metodo = esModoEdicion.value ? 'PUT' : 'POST'
 
@@ -368,7 +369,7 @@ const eliminarMedicamento = async (id) => {
   guardando.value = true
 
   try {
-    const res = await fetch(`http://localhost:4000/api/v1/medicamentos/${id}`, {
+    const res = await fetch(`${apiBase}/medicamentos/${id}`, {
       method: 'DELETE',
       credentials: 'include'
     })
@@ -437,7 +438,7 @@ const stockStatusText = (med) => {
 
 const cerrarSesion = async () => {
   try {
-    await fetch('http://localhost:4000/api/v1/auth/logout', { method: 'POST', credentials: 'include' })
+    await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' })
   } catch (_) { }
   sessionStorage.clear()
   router.push('/')
