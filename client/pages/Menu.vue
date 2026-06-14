@@ -40,6 +40,13 @@
         <p class="menu-card-desc">Ver estadísticas, ingresos totales y medicamentos más vendidos.</p>
         <span class="menu-card-btn">Ver Reportes <img src="/images/arrow-right.svg" class="icon-img" alt="→" style="width:0.8em;height:0.8em;vertical-align:middle;" /></span>
       </div>
+
+      <div @click="irAConocenos" class="menu-card">
+        <img src="/images/information-circle.svg" class="menu-card-icon icon-img" alt="Conócenos" />
+        <h2 class="menu-card-title">Conócenos</h2>
+        <p class="menu-card-desc">Información de la farmacia, horarios y contacto.</p>
+        <span class="menu-card-btn">Ver más <img src="/images/arrow-right.svg" class="icon-img" alt="→" style="width:0.8em;height:0.8em;vertical-align:middle;" /></span>
+      </div>
     </div>
   </div>
 </template>
@@ -88,6 +95,10 @@ const irACarrito = () => {
 
 const irAReportes = () => {
   router.push('/reportes')
+}
+
+const irAConocenos = () => {
+  router.push('/conocenos')
 }
 
 const cerrarSesion = async () => {
