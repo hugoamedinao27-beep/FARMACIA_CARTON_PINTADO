@@ -2,7 +2,7 @@
   <div class="dashboard-wrapper">
     <header class="main-header">
       <div class="header-brand">
-        <img src="/images/pill.svg" class="brand-icon icon-img" alt="Farmacia" />
+        <img src="/images/pepito.jpeg" class="brand-icon icon-img" alt="Farmacia" />
         <div>
           <h1>Farmacia carton pintado</h1>
           <p class="subtitle">Cartón Pintado • Panel de Ventas</p>
@@ -290,7 +290,7 @@ const cerrarSesion = async () => {
 }
 
 .header-brand { display: flex; align-items: center; gap: 1rem; }
-.brand-icon { width: 2rem; height: 2rem; background: #ccfbf1; padding: 0.5rem; border-radius: 10px; object-fit: contain; }
+.brand-icon { width: 2rem; height: 2rem; background: transparent; padding: 0; border-radius: 10px; object-fit: contain; }
 .main-header h1 { font-size: 1.35rem; margin: 0; color: var(--primary); font-weight: 700; }
 .subtitle { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
 .header-actions { display: flex; align-items: center; gap: 1rem; }

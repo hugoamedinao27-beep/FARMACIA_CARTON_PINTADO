@@ -138,6 +138,10 @@ onUnmounted(() => {
   if (intervalo.value) clearInterval(intervalo.value)
 })
 
+onUnmounted(() => {
+  if (intervalo.value) clearInterval(intervalo.value)
+})
+
 const irACatalogo = () => {
   router.push('/inicio')
 }

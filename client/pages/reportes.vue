@@ -2,7 +2,7 @@
   <div class="dashboard-wrapper">
     <header class="main-header">
       <div class="header-brand">
-        <img src="/images/chart-bar.svg" class="brand-icon icon-img" alt="Reportes" />
+        <img src="/images/pepito.jpeg" class="brand-icon icon-img" alt="Farmacia" />
         <div>
           <h1>Farmacia carton pintado</h1>
           <p class="subtitle">Cartón Pintado • Reportes</p>
@@ -211,7 +211,7 @@ const cerrarSesion = async () => {
 }
 .main-header { display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-card); padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 1rem; }
 .header-brand { display: flex; align-items: center; gap: 1rem; }
-.brand-icon { width: 2rem; height: 2rem; background: #ccfbf1; padding: 0.5rem; border-radius: 10px; object-fit: contain; }
+.brand-icon { width: 2rem; height: 2rem; background: transparent; padding: 0; border-radius: 10px; object-fit: contain; }
 .main-header h1 { font-size: 1.35rem; margin: 0; color: var(--primary); font-weight: 700; }
 .subtitle { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
 .header-actions { display: flex; align-items: center; gap: 1rem; }
