@@ -16,7 +16,8 @@ module.exports = {
       ssl: {
         require: true,
         rejectUnauthorized: false
-      }
+      },
+      connectTimeout: 60000
     }
   }
 };
