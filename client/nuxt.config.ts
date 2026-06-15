@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: 'http://localhost:4000/api/v1'
+      apiBase: 'https://farmaciacartonpintado-production.up.railway.app/api/v1'
     }
   }
 })
