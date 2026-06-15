@@ -10,8 +10,5 @@ export default defineNuxtConfig({
     public: {
       apiBase: 'http://localhost:4000/api/v1'
     }
-  },
-  nitro: {
-    preset: 'vercel'
   }
 })
