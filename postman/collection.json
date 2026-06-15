@@ -1,0 +1,734 @@
+{
+  "info": {
+    "name": "Farmacia Cartón Pintado API",
+    "description": "Colección completa de endpoints para la gestión de farmacia. Incluye autenticación, CRUD de medicamentos, ventas y casos de error.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "medicamento_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Endpoints de autenticación de usuarios",
+      "item": [
+        {
+          "name": "Register - Exitoso",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.test('Registro exitoso', () => {",
+                  "        pm.response.to.have.status(201);",
+                  "        pm.response.to.have.jsonBody('success', true);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Operador Prueba\",\n  \"email\": \"operador@test.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register - Email Duplicado (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 409 - email duplicado', () => {",
+                  "    pm.response.to.have.status(409);",
+                  "    pm.response.to.have.jsonBody('error', true);",
+                  "    pm.response.to.have.jsonBody('message', 'El email ya está registrado.');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Operador Prueba\",\n  \"email\": \"operador@test.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register - Campos Vacíos (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 400 - campos requeridos', () => {",
+                  "    pm.response.to.have.status(400);",
+                  "    pm.response.to.have.jsonBody('message', 'Todos los campos son requeridos');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"email\": \"\",\n  \"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login - Exitoso",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Login exitoso', () => {",
+                  "        pm.response.to.have.status(200);",
+                  "        pm.response.to.have.jsonBody('success', true);",
+                  "        pm.response.to.have.jsonBody('token');",
+                  "    });",
+                  "    const json = pm.response.json();",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"operador@test.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login - Credenciales Inválidas (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 401 - credenciales inválidas', () => {",
+                  "    pm.response.to.have.status(401);",
+                  "    pm.response.to.have.jsonBody('error', true);",
+                  "    pm.response.to.have.jsonBody('message', 'Credenciales inválidas');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nosoyvalido@test.com\",\n  \"password\": \"wrongpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Me - Con Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Obtener usuario autenticado', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.response.to.have.jsonBody('success', true);",
+                  "    pm.response.to.have.jsonBody('user');",
+                  "    pm.response.to.have.jsonBody('user.email');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Me - Sin Token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 401 - sin token', () => {",
+                  "    pm.response.to.have.status(401);",
+                  "    pm.response.to.have.jsonBody('error', true);",
+                  "    pm.response.to.have.jsonBody('message', 'Acceso denegado. Token no suministrado.');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me"]
+            }
+          },
+          "auth": {
+            "type": "noauth"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Solicitud de recuperación procesada', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.response.to.have.jsonBody('success', true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"operador@test.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Medicamentos",
+      "description": "CRUD de medicamentos y alertas de stock",
+      "item": [
+        {
+          "name": "Obtener Todos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Listar medicamentos', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.response.to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/medicamentos",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos"]
+            }
+          }
+        },
+        {
+          "name": "Obtener por ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Medicamento encontrado', () => {",
+                  "        pm.response.to.have.status(200);",
+                  "        pm.response.to.have.jsonBody('id');",
+                  "        pm.response.to.have.jsonBody('nombre');",
+                  "        pm.response.to.have.jsonBody('precio');",
+                  "        pm.response.to.have.jsonBody('stock');",
+                  "    });",
+                  "    pm.collectionVariables.set('medicamento_id', pm.response.json().id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/medicamentos/1",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Obtener por ID - No Encontrado (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 404 - medicamento no encontrado', () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/medicamentos/99999",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos", "99999"]
+            }
+          }
+        },
+        {
+          "name": "Alertas de Stock",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Alertas de stock bajo', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.response.to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/medicamentos/alertas-stock",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos", "alertas-stock"]
+            }
+          }
+        },
+        {
+          "name": "Crear Medicamento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.test('Medicamento creado', () => {",
+                  "        pm.response.to.have.status(201);",
+                  "        pm.response.to.have.jsonBody('id');",
+                  "        pm.response.to.have.jsonBody('nombre');",
+                  "    });",
+                  "    pm.collectionVariables.set('medicamento_id', pm.response.json().id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Paracetamol 500mg\",\n  \"precio\": 2500,\n  \"stock\": 100,\n  \"stock_minimo\": 10,\n  \"receta_obligatoria\": false,\n  \"categoria\": \"Analgésico\",\n  \"descripcion\": \"Analgésico y antipirético para el alivio del dolor leve a moderado.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/medicamentos",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Medicamento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Medicamento actualizado', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Paracetamol 500mg (Actualizado)\",\n  \"precio\": 2800,\n  \"stock\": 80,\n  \"stock_minimo\": 10,\n  \"receta_obligatoria\": false,\n  \"categoria\": \"Analgésico\",\n  \"descripcion\": \"Descripción actualizada del medicamento.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/medicamentos/{{medicamento_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos", "{{medicamento_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Medicamento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Medicamento eliminado', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.response.to.have.jsonBody('success', true);",
+                  "    pm.response.to.have.jsonBody('message', 'Medicamento eliminado correctamente.');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/medicamentos/{{medicamento_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos", "{{medicamento_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ventas",
+      "description": "Gestión de ventas y reportes",
+      "item": [
+        {
+          "name": "Crear Venta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Venta creada exitosamente', () => {",
+                  "    pm.response.to.have.status(201);",
+                  "    pm.response.to.have.jsonBody('success', true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"medicamentoId\": 1,\n      \"cantidad\": 2,\n      \"precio_unitario\": 2500\n    }\n  ],\n  \"numero_receta\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ventas",
+              "host": ["{{base_url}}"],
+              "path": ["ventas"]
+            }
+          }
+        },
+        {
+          "name": "Reporte de Ventas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Reporte generado', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.response.to.have.jsonBody('totalVentas');",
+                  "    pm.response.to.have.jsonBody('ingresos');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/ventas/reporte",
+              "host": ["{{base_url}}"],
+              "path": ["ventas", "reporte"]
+            }
+          }
+        },
+        {
+          "name": "Historial de Ventas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Historial obtenido', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.response.to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/ventas/historial",
+              "host": ["{{base_url}}"],
+              "path": ["ventas", "historial"]
+            }
+          }
+        },
+        {
+          "name": "Venta - Sin Autenticación (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 401 - sin token en ventas', () => {",
+                  "    pm.response.to.have.status(401);",
+                  "    pm.response.to.have.jsonBody('error', true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ventas",
+              "host": ["{{base_url}}"],
+              "path": ["ventas"]
+            }
+          },
+          "auth": {
+            "type": "noauth"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Casos de Error - General",
+      "description": "Pruebas de manejo de errores en la API",
+      "item": [
+        {
+          "name": "Ruta No Existente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 404 - ruta no encontrada', () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/ruta-inexistente",
+              "host": ["{{base_url}}"],
+              "path": ["ruta-inexistente"]
+            }
+          }
+        },
+        {
+          "name": "Medicamento - Sin Token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 401 - crear medicamento sin token', () => {",
+                  "    pm.response.to.have.status(401);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/medicamentos",
+              "host": ["{{base_url}}"],
+              "path": ["medicamentos"]
+            }
+          },
+          "auth": {
+            "type": "noauth"
+          }
+        },
+        {
+          "name": "Login - Email No Enviado (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Error 400 - email requerido en forgot', () => {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgot-password"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
