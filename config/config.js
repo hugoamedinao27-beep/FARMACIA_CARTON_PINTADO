@@ -10,10 +10,10 @@ module.exports = {
     dialect: 'mysql'
   },
   production: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL || process.env.MYSQL_URL,
     dialect: 'mysql',
     dialectOptions: {
-      ssl: { rejectUnauthorized: true }
+      ssl: { rejectUnauthorized: false }
     }
   }
 };
