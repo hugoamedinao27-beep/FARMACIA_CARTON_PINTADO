@@ -58,16 +58,16 @@ exports.forgotPassword = async (req, res, next) => {
     if (!email) return res.status(400).json({ error: true, message: 'Email requerido.' });
 
     const user = await User.findOne({ where: { email } });
+    let token = null;
 
     if (user) {
-      const token = crypto.randomBytes(32).toString('hex');
+      token = crypto.randomBytes(32).toString('hex');
       const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
       await PasswordResetToken.create({ userId: user.id, token, expiresAt });
-
       console.log(`[INFO] Reset token para ${email}: ${token}`);
     }
 
-    res.json({ success: true, token, message: 'Token generado. Redirigiendo...' });
+    res.json({ success: true, token, message: token ? 'Token generado. Redirigiendo...' : 'Email no registrado.' });
   } catch (error) { next(error); }
 };
 

@@ -78,7 +78,7 @@ const handleForgotPassword = async () => {
     if (data.token) {
       router.push(`/reset-password?token=${data.token}`)
     } else {
-      message.value = data.message
+      errorMessage.value = data.message || 'Email no encontrado.'
     }
   } catch (err) {
     errorMessage.value = err.message
