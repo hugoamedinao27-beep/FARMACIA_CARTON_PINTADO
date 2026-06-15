@@ -91,6 +91,7 @@
         </div>
       </div>
     </div>
+    <PharmacyFooter />
   </div>
 </template>
 
@@ -338,15 +339,23 @@ onMounted(async () => {
   align-items: center;
   gap: 0.75rem;
   background-color: #f9fafb;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px -4px rgba(0,0,0,0.08);
 }
 
 .about-info-icon {
   width: 1.5rem;
   height: 1.5rem;
   flex-shrink: 0;
-  opacity: 0.7;
+  padding: 0.6rem;
+  border-radius: 12px;
+  background: #ccfbf1;
 }
 
 .about-info-label {
@@ -386,6 +395,13 @@ onMounted(async () => {
   border-radius: 14px;
   padding: 1.25rem;
   margin-bottom: 0.75rem;
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.employee-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 .employee-card:last-child { margin-bottom: 0; }

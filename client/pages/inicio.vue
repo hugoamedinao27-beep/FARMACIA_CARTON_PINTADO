@@ -5,7 +5,7 @@
         <img src="/images/pepito.jpeg" class="brand-icon icon-img" alt="Farmacia" />
         <div>
           <h1>Farmacia carton pintado</h1>
-          <p class="subtitle">Cartón Pintado • Inventario</p>
+          <p class="subtitle"><img src="/images/medical-cross.svg" class="subtitle-icon" alt="" style="width:0.65rem;height:0.65rem;vertical-align:middle;margin-right:0.3rem;opacity:0.6;" /> Cartón Pintado • Inventario</p>
         </div>
       </div>
       <div class="header-actions">
@@ -92,8 +92,12 @@
               <span class="stock-label">Stock:</span>
               <span class="stock-number">{{ med.stock }}</span>
               <span class="stock-unit">unid.</span>
+              <span class="med-stock-badge" :class="med.stock <= 0 ? 'stock-out' : med.stock <= med.stock_minimo ? 'stock-low' : 'stock-ok'" style="margin-left:0.4rem;">{{ med.stock <= 0 ? 'Agotado' : med.stock <= med.stock_minimo ? 'Stock Bajo' : 'Disponible' }}</span>
             </div>
 
+            <span v-if="med.receta_obligatoria" class="med-receta-badge">
+              <img src="/images/clipboard.svg" class="icon-img" alt="" style="width:0.7rem;height:0.7rem;vertical-align:middle;margin-right:0.15rem;" /> Con Receta
+            </span>
             <div class="med-min-alert" v-if="med.stock <= med.stock_minimo && med.stock > 0">
               <img src="/images/exclamation-triangle.svg" class="icon-img" alt="" style="width:0.9rem;height:0.9rem;vertical-align:middle;margin-right:0.2rem;" />Mínimo req: {{ med.stock_minimo }}
             </div>
@@ -216,6 +220,7 @@
       </div>
     </transition>
   </div>
+  <PharmacyFooter />
 </template>
 
 <script setup>
@@ -668,14 +673,27 @@ const cerrarSesion = async () => {
 
 .med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; max-height: 65vh; overflow-y: auto; padding: 0.5rem; }
 
-.med-card { border: 1px solid var(--border-color); border-radius: 12px; background-color: #fff; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; min-height: 310px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.med-card { border: 1px solid var(--border-color); border-radius: 14px; background-color: #fff; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; min-height: 310px; transition: transform 0.25s ease, box-shadow 0.25s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 
-.med-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+.med-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+  z-index: 1;
+}
+
+.med-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.1); }
 
 .card-warning { border-color: rgba(245, 158, 11, 0.4); background-color: #fffbeb; }
+.card-warning::before { background: #f59e0b; }
 .card-danger { border-color: rgba(239, 68, 68, 0.3); background-color: #fef2f2; }
+.card-danger::before { background: #ef4444; }
 
-.card-badge-container { position: absolute; top: 10px; right: 10px; z-index: 2; display: flex; gap: 0.5rem; align-items: center; }
+.card-badge-container { position: absolute; top: 12px; right: 12px; z-index: 2; display: flex; gap: 0.4rem; align-items: center; }
 
 .btn-edit-inline { background-color: rgba(255, 255, 255, 0.9); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: background 0.2s; }
 
@@ -687,7 +705,16 @@ const cerrarSesion = async () => {
 
 .med-name { font-size: 1.05rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0; min-height: 2.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-.price-tag { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin: 0 0 0.25rem 0; }
+.price-tag {
+  display: inline-block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.35rem 0;
+  background: var(--primary);
+  padding: 0.2rem 0.75rem;
+  border-radius: 6px;
+}
 
 .stock-info { font-size: 0.85rem; color: #4b5563; margin-bottom: 0.25rem; }
 
@@ -696,6 +723,15 @@ const cerrarSesion = async () => {
 .stock-unit { font-size: 0.75rem; color: var(--text-muted); }
 
 .med-min-alert { font-size: 0.75rem; color: #b45309; background-color: #fef3c7; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; margin-top: 0.25rem; }
+
+.med-receta-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: #fef3c7; color: #92400e; padding: 0.15rem 0.5rem; border-radius: 4px; margin-top: 0.15rem; }
+
+.med-stock-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.15rem 0.5rem; border-radius: 4px; }
+.stock-ok { background: #d1fae5; color: #065f46; }
+.stock-low { background: #fef3c7; color: #92400e; }
+.stock-out { background: #fee2e2; color: #991b1b; }
+
+.med-categoria { display: inline-block; font-size: 0.7rem; color: var(--text-muted); background: #f3f4f6; padding: 0.15rem 0.6rem; border-radius: 4px; margin-bottom: 0.35rem; }
 
 .card-footer { padding: 0.5rem 1rem 1rem 1rem; background: transparent; display: flex; flex-direction: column; gap: 0.5rem; }
 

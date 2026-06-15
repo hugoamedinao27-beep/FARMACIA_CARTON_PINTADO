@@ -5,7 +5,7 @@
         <img src="/images/pepito.jpeg" class="brand-icon icon-img" alt="Farmacia" />
         <div>
           <h1>Farmacia carton pintado</h1>
-          <p class="subtitle">Cartón Pintado • Panel de Ventas</p>
+          <p class="subtitle"><img src="/images/medical-cross.svg" class="subtitle-icon" alt="" style="width:0.65rem;height:0.65rem;vertical-align:middle;margin-right:0.3rem;opacity:0.6;" /> Cartón Pintado • Panel de Ventas</p>
         </div>
       </div>
 
@@ -123,6 +123,7 @@
       </div>
     </section>
   </div>
+  <PharmacyFooter />
 </template>
 
 <script setup>
@@ -437,22 +438,51 @@ const cerrarSesion = async () => {
 
 .cart-items-list { list-style: none; padding: 0; margin: 0; }
 
-.cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+.cart-item:hover { background-color: #f9fafb; }
 
 .item-details { display: flex; flex-direction: column; gap: 0.25rem; }
-.item-title { font-weight: 600; font-size: 0.95rem; }
+.item-title { font-weight: 600; font-size: 0.95rem; color: #111827; }
 .item-subtotal { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
 
 .item-controls { display: flex; align-items: center; gap: 0.75rem; }
 
-.quantity-selector { display: flex; align-items: center; background-color: #f3f4f6; border-radius: 6px; padding: 0.15rem; }
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
 
-.btn-qty-adj { background: none; border: none; width: 28px; height: 28px; cursor: pointer; font-weight: bold; font-size: 1rem; color: #4b5563; }
+.btn-qty-adj {
+  background: none;
+  border: none;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--primary);
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+.btn-qty-adj:hover { background-color: #ccfbf1; }
 
-.qty-input { width: 35px; border: none; background: transparent; text-align: center; font-weight: 600; font-size: 0.9rem; }
+.qty-input { width: 35px; border: none; background: transparent; text-align: center; font-weight: 700; font-size: 0.9rem; color: #1f2937; }
 
-.btn-delete-item { background: none; border: none; color: #9ca3af; cursor: pointer; padding: 0.25rem; }
-.btn-delete-item:hover { color: var(--danger); background-color: #fee2e2; border-radius: 50%; }
+.btn-delete-item { background: none; border: none; color: #9ca3af; cursor: pointer; padding: 0.3rem; border-radius: 50%; transition: all 0.15s ease; }
+.btn-delete-item:hover { color: var(--danger); background-color: #fee2e2; }
 
 .recipe-container { margin-top: 1.5rem; background-color: #f9fafb; border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; }
 
@@ -467,16 +497,35 @@ const cerrarSesion = async () => {
 
 .modern-input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; }
 
-.checkout-summary { margin-top: 1.5rem; background-color: #f8fafc; border-radius: 10px; padding: 1rem; }
+.checkout-summary {
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
 
-.summary-row { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem; }
-.total-row { border-top: 1px solid var(--border-color); padding-top: 0.75rem; font-weight: bold; color: var(--text-main); }
-.total-amount { font-size: 1.3rem; color: var(--primary); }
+.summary-row { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.5rem; color: #4b5563; }
+.total-row { border-top: 2px solid var(--primary); padding-top: 0.75rem; font-weight: bold; color: var(--text-main); font-size: 1.1rem; }
+.total-amount { font-size: 1.5rem; color: var(--primary); }
 
-.btn-primary-checkout { width: 100%; background-color: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.85rem; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 1.25rem; box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2); }
+.btn-primary-checkout {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1.25rem;
+  box-shadow: 0 4px 10px -2px rgba(13, 148, 136, 0.3);
+  transition: all 0.2s ease;
+}
 
-.btn-primary-checkout:hover:not(:disabled) { background-color: var(--primary-hover); transform: translateY(-1px); }
-.btn-primary-checkout:disabled { background-color: #9ca3af; cursor: not-allowed; }
+.btn-primary-checkout:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 16px -4px rgba(13, 148, 136, 0.35); }
+.btn-primary-checkout:disabled { background: #9ca3af; cursor: not-allowed; box-shadow: none; }
 
 .fade-enter-active, .fade-leave-active { transition: opacity 0.2s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }

@@ -62,7 +62,10 @@
         <h1 class="product-title">{{ medicamento.nombre }}</h1>
         <p class="product-sku">SKU: MED-{{ String(medicamento.id).padStart(4, '0') }}</p>
 
-        <div class="discount-badge" v-if="descuento > 0">-{{ descuento }}%</div>
+        <div style="display:flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <div class="discount-badge" v-if="descuento > 0">-{{ descuento }}%</div>
+          <span v-if="medicamento.receta_obligatoria" class="receta-badge-detail"><img src="/images/clipboard.svg" class="icon-img" alt="" style="width:0.85rem;height:0.85rem;vertical-align:middle;margin-right:0.3rem;" /> Requiere Receta</span>
+        </div>
 
         <div class="stock-table">
           <div class="stock-table-row stock-table-header">
@@ -100,6 +103,7 @@
         </div>
       </div>
     </div>
+    <PharmacyFooter />
   </div>
 </template>
 
@@ -355,11 +359,17 @@ onMounted(async () => {
   background: var(--bg-card);
   border-radius: 14px;
   padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-image-container:hover {
+  transform: scale(1.01);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.12);
 }
 
 .product-main-img {
@@ -373,7 +383,7 @@ onMounted(async () => {
   background: var(--bg-card);
   border-radius: 14px;
   padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -422,6 +432,17 @@ onMounted(async () => {
   padding: 0.35rem 0.8rem;
   border-radius: 6px;
   align-self: flex-start;
+}
+
+.receta-badge-detail {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
 }
 
 .stock-table {

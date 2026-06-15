@@ -5,7 +5,7 @@
         <img src="/images/pepito.jpeg" class="brand-icon icon-img" alt="Farmacia" />
         <div>
           <h1>Farmacia carton pintado</h1>
-          <p class="subtitle">Cartón Pintado • Reportes</p>
+          <p class="subtitle"><img src="/images/medical-cross.svg" class="subtitle-icon" alt="" style="width:0.65rem;height:0.65rem;vertical-align:middle;margin-right:0.3rem;opacity:0.6;" /> Cartón Pintado • Reportes</p>
         </div>
       </div>
       <div class="header-actions">
@@ -119,6 +119,7 @@
         <p v-else class="empty-state-text">No hay datos de ventas todavía.</p>
       </div>
     </div>
+    <PharmacyFooter />
   </div>
 </template>
 
@@ -228,25 +229,35 @@ const cerrarSesion = async () => {
 .nav-item.active { color: var(--primary); background-color: #ccfbf1; }
 .nav-icon { width: 1.1rem; height: 1.1rem; }
 .reportes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-.card-section { background-color: var(--bg-card); border-radius: 14px; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+.card-section { background-color: var(--bg-card); border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .report-card { text-align: center; }
-.report-icon { width: 2.5rem; height: 2.5rem; margin-bottom: 0.5rem; }
+.report-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -6px rgba(0,0,0,0.1); }
+.report-icon { width: 2.5rem; height: 2.5rem; margin-bottom: 0.5rem; padding: 0.5rem; border-radius: 14px; background: #f3f4f6; }
 .icon-img { display: inline-block; vertical-align: middle; }
 .report-number { font-size: 2rem; font-weight: 800; color: var(--primary); }
 .report-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem; }
-.total-card .report-number { color: #3b82f6; }
+.total-card .report-icon { background: #dbeafe; }
+.total-card .report-number { color: #2563eb; }
+.income-card .report-icon { background: #ccfbf1; }
 .income-card .report-number { color: var(--primary); }
-.recipe-card .report-number { color: #f59e0b; }
-.units-card .report-number { color: #8b5cf6; }
-.avg-card .report-number { color: #ec4899; }
-.distinct-card .report-number { color: #14b8a6; }
-.today-sales-card .report-number { color: #f97316; }
-.today-income-card .report-number { color: #22c55e; }
+.recipe-card .report-icon { background: #fef3c7; }
+.recipe-card .report-number { color: #d97706; }
+.units-card .report-icon { background: #ede9fe; }
+.units-card .report-number { color: #7c3aed; }
+.avg-card .report-icon { background: #fce7f3; }
+.avg-card .report-number { color: #db2777; }
+.distinct-card .report-icon { background: #ccfbf1; }
+.distinct-card .report-number { color: #0d9488; }
+.today-sales-card .report-icon { background: #ffedd5; }
+.today-sales-card .report-number { color: #ea580c; }
+.today-income-card .report-icon { background: #dcfce7; }
+.today-income-card .report-number { color: #16a34a; }
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; }
 .section-header h2 { font-size: 1.15rem; margin: 0; color: #374151; }
 .report-table { width: 100%; border-collapse: collapse; text-align: left; }
 .report-table th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding: 0.5rem; border-bottom: 2px solid var(--border-color); }
 .report-table td { padding: 0.5rem; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+.report-table tr:hover td { background-color: #f9fafb; }
 .empty-cart-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
 .empty-state-text { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
 .empty-icon { margin-bottom: 1rem; }

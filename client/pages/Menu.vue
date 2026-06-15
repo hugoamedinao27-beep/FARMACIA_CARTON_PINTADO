@@ -5,7 +5,7 @@
         <img src="/images/pepito.jpeg" class="brand-icon icon-img" alt="Farmacia" />
         <div>
           <h1>Farmacia carton pintado</h1>
-          <p class="subtitle">Cartón Pintado • Panel Principal</p>
+          <p class="subtitle"><img src="/images/medical-cross.svg" class="subtitle-icon" alt="" style="width:0.65rem;height:0.65rem;vertical-align:middle;margin-right:0.3rem;opacity:0.6;" /> Cartón Pintado • Panel Principal</p>
         </div>
       </div>
       <div class="header-actions">
@@ -68,6 +68,7 @@
         <span class="menu-card-btn">Ver más <img src="/images/arrow-right.svg" class="icon-img" alt="→" style="width:0.8em;height:0.8em;vertical-align:middle;" /></span>
       </div>
     </div>
+    <PharmacyFooter />
   </div>
 </template>
 
@@ -176,6 +177,9 @@ const cerrarSesion = async () => {
   --text-main: #1f2937;
   --text-muted: #6b7280;
   --border-color: #e5e7eb;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 12px 24px -6px rgba(0,0,0,0.1);
 
   font-family: 'Segoe UI', system-ui, sans-serif;
   background-color: var(--bg-main);
@@ -246,32 +250,55 @@ const cerrarSesion = async () => {
 
 .menu-card {
   background-color: var(--bg-card);
-  border-radius: 14px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-md);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border: 1px solid var(--border-color);
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .menu-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 20px -4px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+
+.menu-card:hover::before {
+  opacity: 1;
 }
 
 .menu-card-icon {
-  width: 3rem;
-  height: 3rem;
-  margin-bottom: 1rem;
-  background: #ccfbf1;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin-bottom: 1.2rem;
+  background: linear-gradient(135deg, #ccfbf1, #99f6e4);
   padding: 1rem;
-  border-radius: 16px;
+  border-radius: 18px;
   object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.menu-card:hover .menu-card-icon {
+  transform: scale(1.08);
 }
 
 .menu-card-title {
