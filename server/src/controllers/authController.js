@@ -64,12 +64,10 @@ exports.forgotPassword = async (req, res, next) => {
       const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
       await PasswordResetToken.create({ userId: user.id, token, expiresAt });
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`[DEV] Reset token para ${email}: ${token}`);
-      }
+      console.log(`[INFO] Reset token para ${email}: ${token}`);
     }
 
-    res.json({ success: true, message: 'Si el email existe, recibirás instrucciones.' });
+    res.json({ success: true, token, message: 'Token generado. Redirigiendo...' });
   } catch (error) { next(error); }
 };
 

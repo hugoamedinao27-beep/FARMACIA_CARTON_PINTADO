@@ -34,7 +34,6 @@
           <div>
             <strong>Solicitud Procesada</strong>
             <p>{{ message }}</p>
-            <p v-if="resetToken" class="token-display">Token: {{ resetToken }}</p>
           </div>
         </div>
       </transition>
@@ -54,19 +53,19 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 const apiBase = useApiBase()
+const router = useRouter()
 
 const email = ref('')
 const loading = ref(false)
 const message = ref('')
 const errorMessage = ref('')
-const resetToken = ref('')
 
 const handleForgotPassword = async () => {
   loading.value = true
   message.value = ''
   errorMessage.value = ''
-  resetToken.value = ''
 
   try {
     const res = await fetch(`${apiBase}/auth/forgot-password`, {
@@ -76,8 +75,11 @@ const handleForgotPassword = async () => {
     })
     const data = await res.json()
     if (!res.ok) throw new Error(data.message)
-    message.value = data.message
-    if (data.resetToken) resetToken.value = data.resetToken
+    if (data.token) {
+      router.push(`/reset-password?token=${data.token}`)
+    } else {
+      message.value = data.message
+    }
   } catch (err) {
     errorMessage.value = err.message
   } finally {
