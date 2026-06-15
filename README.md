@@ -4,16 +4,9 @@ Sistema completo de gestión para farmacia con inventario, ventas, autenticació
 
 ## Alcance
 
-Sistema de gestión farmacéutica que cubre: inventario de medicamentos (CRUD + alertas de stock bajo), ventas transaccionales con validación de stock y control de recetas, autenticación de usuarios mediante JWT, reportes de ventas, filtros de búsqueda, y restablecimiento de contraseña. Incluye API REST documentada y frontend SPA en Nuxt 4. Desplegado en Railway (backend) y Vercel (frontend).
 
 ## Cronograma
 
-| Hito | Fecha estimada | Entregable |
-|------|---------------|------------|
-| Hito 0 | Semana 1 | Repositorio con estructura client/ + API, README, informe de inicio |
-| Hito 1 | Semana 3–4 | ≥ 5/23 requisitos, GEN-01 a GEN-03, rq-01 y rq-02 |
-| Hito 2 | Semana 6–7 | ≥ 10/23 requisitos, Auth completo (API+WEB), 1 flujo de dominio en UI, Postman |
-| Hito 3 | Semana 10 | 23/23 requisitos, frontend completo, API + Railway, front público, README ejecutable, demo web |
 
 ## Matriz de Requisitos
 
