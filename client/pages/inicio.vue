@@ -32,11 +32,6 @@
           <span class="nav-text">Farmacia</span>
         </li>
         
-        <li @click="irAReportes" class="nav-item">
-          <img src="/images/chart-bar.svg" class="nav-icon icon-img" alt="Reportes" />
-          <span class="nav-text">Reportes</span>
-        </li>
-
         <li @click="irAlCarrito" class="nav-item">
           <img src="/images/shopping-cart.svg" class="nav-icon icon-img" alt="Carrito" />
           <span class="nav-text">Carrito</span>

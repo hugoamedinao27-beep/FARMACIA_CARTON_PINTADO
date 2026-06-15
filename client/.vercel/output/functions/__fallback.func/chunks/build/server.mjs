@@ -605,17 +605,17 @@ const _routes = [
   {
     name: "medicamento-id",
     path: "/medicamento/:id()",
-    component: () => import('./_id_-DkXDBMFS.mjs')
+    component: () => import('./_id_-CWujtL6f.mjs')
   },
   {
     name: "conocenos",
     path: "/conocenos",
-    component: () => import('./conocenos-CsVfMt5x.mjs')
+    component: () => import('./conocenos-Cyc3BkhF.mjs')
   },
   {
     name: "dashboard",
     path: "/dashboard",
-    component: () => import('./dashboard-BBguHTsD.mjs')
+    component: () => import('./dashboard-BVMEQrcG.mjs')
   },
   {
     name: "forgot-password",
@@ -625,17 +625,17 @@ const _routes = [
   {
     name: "inicio",
     path: "/inicio",
-    component: () => import('./inicio-ClK8zqXs.mjs')
+    component: () => import('./inicio-D4l6CApW.mjs')
   },
   {
     name: "Menu",
     path: "/Menu",
-    component: () => import('./Menu-BnVN-Kwg.mjs')
+    component: () => import('./Menu-BA3reG_X.mjs')
   },
   {
     name: "reportes",
     path: "/reportes",
-    component: () => import('./reportes-B12Romhw.mjs')
+    component: () => import('./reportes-R22FFM_0.mjs')
   },
   {
     name: "reset-password",
@@ -645,7 +645,7 @@ const _routes = [
   {
     name: "index",
     path: "/",
-    component: () => import('./index-BjDBSsE-.mjs')
+    component: () => import('./index-DP37kY53.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {

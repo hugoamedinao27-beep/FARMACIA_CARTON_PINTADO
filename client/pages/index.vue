@@ -145,7 +145,7 @@ const handleSubmit = async () => {
       sessionStorage.setItem('token', data.token)
       if (data.user && data.user.name) sessionStorage.setItem('user_name', data.user.name)
       if (data.user && data.user.role) sessionStorage.setItem('user_role', data.user.role)
-      router.push(data.user?.role === 'admin' ? '/menu' : '/inicio')
+      router.push('/menu')
     }
     
   } catch (err) {

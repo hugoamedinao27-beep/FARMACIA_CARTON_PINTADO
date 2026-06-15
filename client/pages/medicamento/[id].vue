@@ -24,9 +24,6 @@
         <li @click="irAInicio" class="nav-item">
           <img src="/images/pepito.jpeg" class="nav-icon icon-img" alt="Farmacia" /> Farmacia
         </li>
-        <li @click="irAReportes" class="nav-item">
-          <img src="/images/chart-bar.svg" class="nav-icon icon-img" alt="Reportes" /> Reportes
-        </li>
         <li @click="irACarrito" class="nav-item">
           <img src="/images/shopping-cart.svg" class="nav-icon icon-img" alt="Carrito" /> Carrito
           <span v-if="itemsEnCarrito > 0" class="cart-badge">{{ itemsEnCarrito }}</span>
