@@ -27,7 +27,7 @@
           <span class="nav-text">Menú</span>
         </li>
         <li @click="irAlInicio" class="nav-item">
-          <img src="/images/pill.svg" class="nav-icon icon-img" alt="Farmacia" />
+          <img src="/images/pepito.jpeg" class="nav-icon icon-img" alt="Farmacia" />
           <span class="nav-text">Farmacia</span>
         </li>
         <li class="nav-item active">

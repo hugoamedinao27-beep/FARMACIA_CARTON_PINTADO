@@ -22,7 +22,7 @@
           <img src="/images/home.svg" class="nav-icon icon-img" alt="Menú" /> Menú
         </li>
         <li @click="irAInicio" class="nav-item">
-          <img src="/images/pill.svg" class="nav-icon icon-img" alt="Farmacia" /> Farmacia
+          <img src="/images/pepito.jpeg" class="nav-icon icon-img" alt="Farmacia" /> Farmacia
         </li>
         <li @click="irAReportes" class="nav-item">
           <img src="/images/chart-bar.svg" class="nav-icon icon-img" alt="Reportes" /> Reportes
@@ -46,7 +46,7 @@
     <div v-else-if="medicamento" class="product-layout">
       <div class="product-image-col">
         <div class="product-image-container">
-          <img src="/images/pill.svg" class="product-main-img" alt="Medicamento" />
+          <img src="/images/pastiloca.jpeg" class="product-main-img" alt="Medicamento" />
         </div>
       </div>
 
@@ -363,10 +363,9 @@ onMounted(async () => {
 }
 
 .product-main-img {
-  width: 80%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
   object-fit: contain;
-  opacity: 0.85;
 }
 
 .product-info-col {

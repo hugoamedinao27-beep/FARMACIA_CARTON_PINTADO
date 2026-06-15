@@ -28,7 +28,7 @@
         </li>
         
         <li class="nav-item active">
-          <img src="/images/pill.svg" class="nav-icon icon-img" alt="Farmacia" />
+          <img src="/images/pepito.jpeg" class="nav-icon icon-img" alt="Farmacia" />
           <span class="nav-text">Farmacia</span>
         </li>
         
@@ -83,7 +83,7 @@
           </div>
 
           <div class="card-body">
-            <img src="/images/pill.svg" class="med-icon-box icon-img" alt="Medicamento" />
+            <img src="/images/pastiloca.jpeg" class="med-icon-box icon-img" alt="Medicamento" />
             <h3 class="med-name">{{ med.nombre }}</h3>
             <span v-if="med.categoria" class="med-categoria">{{ med.categoria }}</span>
             <p class="price-tag">${{ parseFloat(med.precio).toLocaleString('es-CL') }}</p>
@@ -683,7 +683,7 @@ const cerrarSesion = async () => {
 
 .card-body { padding: 1.25rem 1.25rem 0.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 1rem; flex-grow: 1; }
 
-.med-icon-box { width: 2.2rem; height: 2.2rem; margin-bottom: 0.25rem; opacity: 0.85; }
+.med-icon-box { width: 3.5rem; height: 3.5rem; margin-bottom: 0.25rem; object-fit: contain; }
 
 .med-name { font-size: 1.05rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0; min-height: 2.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 

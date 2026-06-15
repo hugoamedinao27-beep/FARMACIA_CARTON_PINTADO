@@ -22,7 +22,7 @@
           <img src="/images/home.svg" class="nav-icon icon-img" alt="Menú" /> Menú
         </li>
         <li @click="irAInicio" class="nav-item">
-          <img src="/images/pill.svg" class="nav-icon icon-img" alt="Farmacia" /> Farmacia
+          <img src="/images/pepito.jpeg" class="nav-icon icon-img" alt="Farmacia" /> Farmacia
         </li>
         <li @click="irAReportes" class="nav-item">
           <img src="/images/chart-bar.svg" class="nav-icon icon-img" alt="Reportes" /> Reportes

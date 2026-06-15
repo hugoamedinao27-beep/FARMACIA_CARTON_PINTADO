@@ -42,7 +42,7 @@
 
     <div class="menu-grid">
       <div @click="irACatalogo" class="menu-card">
-        <img src="/images/pill.svg" class="menu-card-icon icon-img" alt="Medicamentos" />
+        <img src="/images/pepito.jpeg" class="menu-card-icon icon-img" alt="Medicamentos" />
         <h2 class="menu-card-title">Catálogo de Medicamentos</h2>
         <p class="menu-card-desc">Visualizar inventario, agregar, editar y eliminar fármacos del sistema.</p>
         <span class="menu-card-btn">Ver Inventario <img src="/images/arrow-right.svg" class="icon-img" alt="→" style="width:0.8em;height:0.8em;vertical-align:middle;" /></span>
