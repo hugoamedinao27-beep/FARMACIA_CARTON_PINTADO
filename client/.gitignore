@@ -6,6 +6,9 @@
 .cache
 dist
 
+# Vercel output (must be built fresh on Vercel, not committed)
+.vercel
+
 # Node dependencies
 node_modules
 
