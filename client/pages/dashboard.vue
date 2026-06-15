@@ -125,6 +125,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 const apiBase = useApiBase()
+const api = useApiFetch()
 
 const router = useRouter()
 const carrito = ref([])
@@ -142,7 +143,7 @@ onMounted(async () => {
 
   if (!token) {
     try {
-      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
+      const res = await api.get('/auth/me')
       if (res.ok) {
         const data = await res.json()
         token = 'restored'
@@ -223,12 +224,7 @@ const procesarVentaTransaccional = async () => {
   }
 
   try {
-    const res = await fetch(`${apiBase}/ventas`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
+    const res = await api.post('/ventas', payload)
 
     const data = await res.json()
     if (!res.ok) throw new Error(data.message || 'Error al procesar la venta.')
@@ -247,7 +243,7 @@ const procesarVentaTransaccional = async () => {
 
 const cerrarSesion = async () => {
   try {
-    await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' })
+    await api.post('/auth/logout')
   } catch (_) { }
   sessionStorage.clear()
   router.push('/')

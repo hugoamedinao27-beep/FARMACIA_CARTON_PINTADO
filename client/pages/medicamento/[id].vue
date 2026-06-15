@@ -108,6 +108,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const apiBase = useApiBase()
+const api = useApiFetch()
 
 const route = useRoute()
 const router = useRouter()
@@ -199,7 +200,7 @@ const irACarrito = () => router.push('/dashboard')
 
 const cerrarSesion = async () => {
   try {
-    await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' })
+    await api.post('/auth/logout')
   } catch (_) { }
   sessionStorage.clear()
   router.push('/')
@@ -207,7 +208,7 @@ const cerrarSesion = async () => {
 
 onMounted(async () => {
   try {
-    const res = await fetch(`${apiBase}/medicamentos/${route.params.id}`, { credentials: 'include' })
+    const res = await api.get(`/medicamentos/${route.params.id}`)
     if (!res.ok) {
       if (res.status === 404) throw new Error('Medicamento no encontrado.')
       throw new Error('Error al cargar el medicamento.')

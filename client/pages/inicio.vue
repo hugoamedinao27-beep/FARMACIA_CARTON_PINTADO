@@ -222,6 +222,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const apiBase = useApiBase()
+const api = useApiFetch()
 
 const router = useRouter()
 const medicamentos = ref([])
@@ -247,7 +248,7 @@ const medEditando = ref({
 
 const obtenerMedicamentos = async () => {
   try {
-    const res = await fetch(`${apiBase}/medicamentos`, { credentials: 'include' })
+    const res = await api.get('/medicamentos')
     if (!res.ok) throw new Error('Error al obtener el catálogo')
     const data = await res.json()
     
@@ -266,7 +267,7 @@ onMounted(async () => {
 
   if (!token) {
     try {
-      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
+      const res = await api.get('/auth/me')
       if (res.ok) {
         const data = await res.json()
         token = 'restored'
@@ -341,24 +342,16 @@ const cerrarEditor = () => {
 
 const guardarCambiosMedicamiento = async () => {
   guardando.value = true
-  const url = esModoEdicion.value
-    ? `${apiBase}/medicamentos/${medEditando.value.id}`
-    : `${apiBase}/medicamentos`
-
-  const metodo = esModoEdicion.value ? 'PUT' : 'POST'
-
   try {
-    const res = await fetch(url, {
-      method: metodo,
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...medEditando.value,
-        precio: Number(medEditando.value.precio),
-        stock: Number(medEditando.value.stock),
-        stock_minimo: Number(medEditando.value.stock_minimo)
-      })
-    })
+    const body = {
+      ...medEditando.value,
+      precio: Number(medEditando.value.precio),
+      stock: Number(medEditando.value.stock),
+      stock_minimo: Number(medEditando.value.stock_minimo)
+    }
+    const res = esModoEdicion.value
+      ? await api.put(`/medicamentos/${medEditando.value.id}`, body)
+      : await api.post('/medicamentos', body)
 
     const data = await res.json()
     if (!res.ok) throw new Error(data.message || 'Error al procesar la solicitud.')
@@ -380,10 +373,7 @@ const eliminarMedicamento = async (id) => {
   guardando.value = true
 
   try {
-    const res = await fetch(`${apiBase}/medicamentos/${id}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
+    const res = await api.del(`/medicamentos/${id}`)
 
     let data = {}
     if (res.status !== 204) data = await res.json()
@@ -449,7 +439,7 @@ const stockStatusText = (med) => {
 
 const cerrarSesion = async () => {
   try {
-    await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' })
+    await api.post('/auth/logout')
   } catch (_) { }
   sessionStorage.clear()
   router.push('/')

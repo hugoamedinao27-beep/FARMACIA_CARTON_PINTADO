@@ -96,6 +96,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const apiBase = useApiBase()
+const api = useApiFetch()
 
 const router = useRouter()
 const usuarioActivo = ref('Operador')
@@ -135,7 +136,7 @@ const irACarrito = () => router.push('/dashboard')
 
 const cerrarSesion = async () => {
   try {
-    await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' })
+    await api.post('/auth/logout')
   } catch (_) { }
   sessionStorage.clear()
   router.push('/')

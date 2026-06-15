@@ -127,6 +127,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const apiBase = useApiBase()
+const api = useApiFetch()
 
 const router = useRouter()
 const usuarioActivo = ref('Operador')
@@ -157,7 +158,7 @@ const cargarReportes = async () => {
 
   if (!token) {
     try {
-      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
+      const res = await api.get('/auth/me')
       if (res.ok) {
         const data = await res.json()
         token = 'restored'
@@ -183,7 +184,7 @@ const cargarReportes = async () => {
   }
 
   try {
-    const res = await fetch(`${apiBase}/ventas/reporte`, { credentials: 'include' })
+    const res = await api.get('/ventas/reporte')
     if (!res.ok) {
       const data = await res.json().catch(() => ({}))
       throw new Error(data.message || `Error del servidor (${res.status})`)
@@ -202,7 +203,7 @@ const irAlMenu = () => router.push('/menu')
 const irAlInicio = () => router.push('/inicio')
 
 const cerrarSesion = async () => {
-  try { await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' }) } catch (_) { }
+  try { await api.post('/auth/logout') } catch (_) { }
   sessionStorage.clear()
   router.push('/')
 }

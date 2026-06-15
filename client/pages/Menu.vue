@@ -76,6 +76,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 const apiBase = useApiBase()
+const api = useApiFetch()
 
 const router = useRouter()
 const usuarioActivo = ref('Operador')
@@ -116,7 +117,7 @@ onMounted(async () => {
 
   if (!token) {
     try {
-      const res = await fetch(`${apiBase}/auth/me`, { credentials: 'include' })
+      const res = await api.get('/auth/me')
       if (res.ok) {
         const data = await res.json()
         token = 'restored'
@@ -165,7 +166,7 @@ const irAConocenos = () => {
 
 const cerrarSesion = async () => {
   try {
-    await fetch(`${apiBase}/auth/logout`, { method: 'POST', credentials: 'include' })
+    await api.post('/auth/logout')
   } catch (_) { }
   sessionStorage.clear()
   router.push('/')
