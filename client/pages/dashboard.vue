@@ -152,6 +152,7 @@ onMounted(async () => {
         const data = await res.json()
         token = 'restored'
         if (data.user?.name) sessionStorage.setItem('user_name', data.user.name)
+        if (data.user?.role) sessionStorage.setItem('user_role', data.user.role)
       }
     } catch (_) { }
   }

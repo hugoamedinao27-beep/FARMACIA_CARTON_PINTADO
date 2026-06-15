@@ -1,35 +1,15 @@
 const express = require('express');
 const router = express.Router();
-
-// Importamos el controlador encargado de interactuar con el modelo de la Base de Datos
 const medicamentoController = require('../controllers/medicamentoController');
+const auth = require('../middlewares/authMiddleware');
+const admin = require('../middlewares/adminMiddleware');
 
-/**
- * ------------------------------------------------------------------------
- * RUTAS PARA LA API DE MEDICAMENTOS (Endpoint Base: /api/v1/medicamentos)
- * ------------------------------------------------------------------------
- */
+router.get('/', auth, medicamentoController.obtenerMedicamentos);
+router.get('/alertas-stock', auth, medicamentoController.getAlertasStock);
+router.get('/:id', auth, medicamentoController.obtenerMedicamentoPorId);
 
-// 1. Obtener todos los medicamentos (Catálogo del Inventario)
-// GET -> /api/v1/medicamentos
-router.get('/', medicamentoController.obtenerMedicamentos);
-
-// Alerta de stock bajo
-router.get('/alertas-stock', medicamentoController.getAlertasStock);
-
-// Obtener un medicamento por ID
-router.get('/:id', medicamentoController.obtenerMedicamentoPorId);
-
-// 2. Crear un nuevo medicamento en el sistema
-// POST -> /api/v1/medicamentos
-router.post('/', medicamentoController.crearMedicamento);
-
-// 3. Actualizar un medicamento existente mediante su ID dinámico
-// PUT -> /api/v1/medicamentos/:id
-router.put('/:id', medicamentoController.actualizarMedicamento);
-
-// 4. Eliminar permanentemente un medicamento mediante su ID dinámico
-// DELETE -> /api/v1/medicamentos/:id
-router.delete('/:id', medicamentoController.eliminarMedicamento);
+router.post('/', auth, admin, medicamentoController.crearMedicamento);
+router.put('/:id', auth, admin, medicamentoController.actualizarMedicamento);
+router.delete('/:id', auth, admin, medicamentoController.eliminarMedicamento);
 
 module.exports = router;

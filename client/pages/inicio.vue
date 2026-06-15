@@ -51,7 +51,7 @@
           <h2><img src="/images/clipboard.svg" class="icon-img" alt="" style="width:1.2rem;height:1.2rem;vertical-align:middle;margin-right:0.3rem;" />Inventario Disponible en Sala</h2>
           <span class="items-count">{{ medicamentosFiltrados.length }} Fármacos</span>
         </div>
-        <button @click="abrirCreador" class="btn-add-new-med">
+        <button v-if="userRole === 'admin'" @click="abrirCreador" class="btn-add-new-med">
           <img src="/images/plus.svg" class="icon-img" alt="" style="width:1em;height:1em;vertical-align:middle;margin-right:0.2rem;" /> Nuevo Medicamento
         </button>
       </div>
@@ -76,7 +76,7 @@
           :class="{ 'card-warning': med.stock <= med.stock_minimo && med.stock > 0, 'card-danger': med.stock <= 0 }"
         >
           <div class="card-badge-container">
-            <button @click="abrirEditor(med)" class="btn-edit-inline" title="Editar Medicamento"><img src="/images/pencil.svg" class="icon-img" alt="Editar" style="width:1em;height:1em;" /></button>
+            <button v-if="userRole === 'admin'" @click="abrirEditor(med)" class="btn-edit-inline" title="Editar Medicamento"><img src="/images/pencil.svg" class="icon-img" alt="Editar" style="width:1em;height:1em;" /></button>
             <span :class="badgeClass(med)">
               {{ stockStatusText(med) }}
             </span>
@@ -231,6 +231,7 @@ const apiBase = useApiBase()
 const router = useRouter()
 const medicamentos = ref([])
 const usuarioActivo = ref('Operador')
+const userRole = ref('user')
 const busqueda = ref('')
 const filtroStock = ref('')
 
@@ -275,6 +276,7 @@ onMounted(async () => {
         const data = await res.json()
         token = 'restored'
         if (data.user?.name) sessionStorage.setItem('user_name', data.user.name)
+        if (data.user?.role) sessionStorage.setItem('user_role', data.user.role)
       }
     } catch (_) { }
   }
@@ -289,6 +291,7 @@ onMounted(async () => {
   if (nombreGuardado) {
     usuarioActivo.value = nombreGuardado
   }
+  userRole.value = sessionStorage.getItem('user_role') || 'user'
 
   obtenerMedicamentos()
 })

@@ -54,7 +54,7 @@
         <p class="menu-card-desc">Procesar ventas, gestionar recetas y confirmar transacciones.</p>
         <span class="menu-card-btn">Ir al Carrito <img src="/images/arrow-right.svg" class="icon-img" alt="→" style="width:0.8em;height:0.8em;vertical-align:middle;" /></span>
       </div>
-      <div @click="irAReportes" class="menu-card">
+      <div @click="irAReportes" v-if="userRole === 'admin'" class="menu-card">
         <img src="/images/chart-bar.svg" class="menu-card-icon icon-img" alt="Reportes" />
         <h2 class="menu-card-title">Reportes de Ventas</h2>
         <p class="menu-card-desc">Ver estadísticas, ingresos totales y medicamentos más vendidos.</p>
@@ -79,6 +79,7 @@ const apiBase = useApiBase()
 
 const router = useRouter()
 const usuarioActivo = ref('Operador')
+const userRole = ref('user')
 const indice = ref(0)
 const intervalo = ref(null)
 
@@ -111,6 +112,7 @@ const reanudar = () => {
 onMounted(async () => {
   intervalo.value = setInterval(avanzar, 4000)
   let token = sessionStorage.getItem('token')
+  let role = sessionStorage.getItem('user_role')
 
   if (!token) {
     try {
@@ -119,6 +121,7 @@ onMounted(async () => {
         const data = await res.json()
         token = 'restored'
         if (data.user?.name) sessionStorage.setItem('user_name', data.user.name)
+        if (data.user?.role) { sessionStorage.setItem('user_role', data.user.role); role = data.user.role }
       }
     } catch (_) { }
   }
@@ -129,6 +132,7 @@ onMounted(async () => {
     return
   }
 
+  userRole.value = role || 'user'
   const nombreGuardado = sessionStorage.getItem('user_name') || sessionStorage.getItem('email')
   if (nombreGuardado) {
     usuarioActivo.value = nombreGuardado

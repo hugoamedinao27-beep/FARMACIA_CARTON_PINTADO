@@ -142,10 +142,10 @@ const handleSubmit = async () => {
         toggleMode()
       }, 2500)
     } else {
-      // Si es inicio de sesión, guardamos token e ingresamos al inicio
       sessionStorage.setItem('token', data.token)
       if (data.user && data.user.name) sessionStorage.setItem('user_name', data.user.name)
-      router.push('/menu')
+      if (data.user && data.user.role) sessionStorage.setItem('user_role', data.user.role)
+      router.push(data.user?.role === 'admin' ? '/menu' : '/inicio')
     }
     
   } catch (err) {

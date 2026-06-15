@@ -615,7 +615,7 @@ const _routes = [
   {
     name: "dashboard",
     path: "/dashboard",
-    component: () => import('./dashboard-DBabl_tj.mjs')
+    component: () => import('./dashboard-BBguHTsD.mjs')
   },
   {
     name: "forgot-password",
@@ -625,17 +625,17 @@ const _routes = [
   {
     name: "inicio",
     path: "/inicio",
-    component: () => import('./inicio-DrGlEdLx.mjs')
+    component: () => import('./inicio-ClK8zqXs.mjs')
   },
   {
     name: "Menu",
     path: "/Menu",
-    component: () => import('./Menu-CiF9NdeE.mjs')
+    component: () => import('./Menu-BnVN-Kwg.mjs')
   },
   {
     name: "reportes",
     path: "/reportes",
-    component: () => import('./reportes-C53Z3Au2.mjs')
+    component: () => import('./reportes-B12Romhw.mjs')
   },
   {
     name: "reset-password",
@@ -645,7 +645,7 @@ const _routes = [
   {
     name: "index",
     path: "/",
-    component: () => import('./index-BdR8Au8n.mjs')
+    component: () => import('./index-BjDBSsE-.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {

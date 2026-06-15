@@ -162,6 +162,7 @@ const cargarReportes = async () => {
         const data = await res.json()
         token = 'restored'
         if (data.user?.name) sessionStorage.setItem('user_name', data.user.name)
+        if (data.user?.role) sessionStorage.setItem('user_role', data.user.role)
       }
     } catch (_) { }
   }
@@ -174,6 +175,12 @@ const cargarReportes = async () => {
 
   const nombreGuardado = sessionStorage.getItem('user_name')
   if (nombreGuardado) usuarioActivo.value = nombreGuardado
+
+  const userRole = sessionStorage.getItem('user_role')
+  if (userRole !== 'admin') {
+    router.push('/menu')
+    return
+  }
 
   try {
     const res = await fetch(`${apiBase}/ventas/reporte`, { credentials: 'include' })

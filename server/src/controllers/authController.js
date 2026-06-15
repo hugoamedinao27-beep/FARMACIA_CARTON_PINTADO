@@ -10,9 +10,11 @@ exports.register = async (req, res, next) => {
     if (!name || !email || !password) return res.status(400).json({ message: 'Todos los campos son requeridos' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashedPassword });
+    const userCount = await User.count();
+    const role = userCount === 0 ? 'admin' : 'user';
+    const user = await User.create({ name, email, password: hashedPassword, role });
 
-    res.status(201).json({ success: true, user: { id: user.id, name: user.name, email: user.email } });
+    res.status(201).json({ success: true, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch (error) {
     if (error instanceof UniqueConstraintError) {
       return res.status(409).json({ error: true, message: 'El email ya está registrado.' });
@@ -29,7 +31,7 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ error: true, message: 'Credenciales inválidas' });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '8h' });
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '8h' });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -38,13 +40,13 @@ exports.login = async (req, res, next) => {
       maxAge: 8 * 60 * 60 * 1000
     });
 
-    res.json({ success: true, token, user: { id: user.id, name: user.name } });
+    res.json({ success: true, token, user: { id: user.id, name: user.name, role: user.role } });
   } catch (error) { next(error); }
 };
 
 exports.me = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.user.id, { attributes: ['id', 'name', 'email'] });
+    const user = await User.findByPk(req.user.id, { attributes: ['id', 'name', 'email', 'role'] });
     if (!user) return res.status(404).json({ error: true, message: 'Usuario no encontrado.' });
     res.json({ success: true, user });
   } catch (error) { next(error); }
