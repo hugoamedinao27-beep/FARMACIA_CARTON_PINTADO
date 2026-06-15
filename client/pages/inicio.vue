@@ -102,6 +102,7 @@
             <div v-if="med.stock > 0" class="quantity-selector-container">
               <label :for="'qty-' + med.id">Cant:</label>
               <input 
+                v-if="!med.receta_obligatoria"
                 :id="'qty-' + med.id"
                 type="number" 
                 v-model.number="med.cantidadSeleccionada" 
@@ -109,6 +110,7 @@
                 :max="med.stock"
                 class="modern-input qty-input"
               />
+              <span v-else class="receta-qty-badge">1 (Receta)</span>
             </div>
 
             <button
@@ -391,7 +393,12 @@ const eliminarMedicamento = async (id) => {
 }
 
 const agregarAlCarrito = (med) => {
-  const cantidadALlevar = Math.floor(Number(med.cantidadSeleccionada)) || 1
+  const maxPermitido = med.receta_obligatoria ? 1 : med.stock
+  let cantidadALlevar = Math.floor(Number(med.cantidadSeleccionada)) || 1
+
+  if (med.receta_obligatoria && cantidadALlevar > 1) {
+    cantidadALlevar = 1
+  }
 
   if (cantidadALlevar <= 0) {
     alert('❌ Por favor, ingresa una cantidad mayor a 0.')
@@ -400,6 +407,11 @@ const agregarAlCarrito = (med) => {
 
   if (cantidadALlevar > med.stock) {
     alert(`❌ No puedes agregar ${cantidadALlevar} unidades. Solo quedan ${med.stock} disponibles.`)
+    return
+  }
+
+  if (med.receta_obligatoria && cantidadALlevar > 1) {
+    alert('❌ Los medicamentos con receta obligatoria solo pueden comprarse de a 1 unidad.')
     return
   }
 
@@ -785,6 +797,17 @@ const cerrarSesion = async () => {
 .btn-primary-checkout { width: 100%; background-color: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.85rem; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2); }
 
 .btn-primary-checkout:hover:not(:disabled) { background-color: var(--primary-hover); }
+
+.receta-qty-badge {
+  display: inline-block;
+  background-color: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #fbbf24;
+}
 
 .margin-reset { margin-top: 0 !important; width: auto !important; }
 

@@ -86,9 +86,12 @@
 
         <div class="purchase-row">
           <div class="qty-controls">
-            <button @click="decrementarCantidad" class="btn-qty">−</button>
-            <input type="number" v-model.number="cantidad" min="1" :max="medicamento.stock" class="qty-input-detail" readonly />
-            <button @click="incrementarCantidad" class="btn-qty">+</button>
+            <template v-if="!medicamento.receta_obligatoria">
+              <button @click="decrementarCantidad" class="btn-qty">−</button>
+              <input type="number" v-model.number="cantidad" min="1" :max="medicamento.stock" class="qty-input-detail" readonly />
+              <button @click="incrementarCantidad" class="btn-qty">+</button>
+            </template>
+            <span v-else class="receta-qty-badge">1 (Receta)</span>
           </div>
           <button @click="agregarAlCarrito" class="btn-add-cart-detail" :disabled="medicamento.stock <= 0">
             Agregar al carro
@@ -149,6 +152,7 @@ const itemsEnCarrito = computed(() => {
 })
 
 const incrementarCantidad = () => {
+  if (medicamento.value.receta_obligatoria) return
   if (cantidad.value < medicamento.value.stock) cantidad.value++
 }
 
@@ -158,7 +162,7 @@ const decrementarCantidad = () => {
 
 const agregarAlCarrito = () => {
   const med = medicamento.value
-  const cant = cantidad.value
+  const cant = med.receta_obligatoria ? 1 : cantidad.value
 
   if (cant <= 0) {
     alert('Por favor, ingresa una cantidad mayor a 0.')
@@ -565,6 +569,17 @@ onMounted(async () => {
 .badge-success { background-color: #d1fae5; color: #065f46; }
 .badge-warning { background-color: #fef3c7; color: #92400e; }
 .badge-danger { background-color: #fee2e2; color: #991b1b; }
+
+.receta-qty-badge {
+  display: inline-block;
+  background-color: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #fbbf24;
+}
 
 @media (max-width: 768px) {
   .product-layout { flex-direction: column; }

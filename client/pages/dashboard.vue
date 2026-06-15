@@ -187,6 +187,10 @@ const irAReportes = () => {
 }
 
 const incrementarCantidad = (item) => {
+  if (item.receta_obligatoria) {
+    alert('Los medicamentos con receta obligatoria solo pueden comprarse de a 1 unidad.')
+    return
+  }
   if (item.cantidad < item.stock) {
     item.cantidad++
     guardarCarrito()
@@ -213,6 +217,12 @@ const calcularTotal = computed(() => {
 const procesarVentaTransaccional = async () => {
   if (requiereReceta.value && !numeroReceta.value.trim()) {
     alert('⚠️ Error Regulatorio: Debe ingresar el número de receta médica obligatoria.')
+    return
+  }
+
+  const recetaConMultiples = carrito.value.find(item => item.receta_obligatoria && item.cantidad > 1)
+  if (recetaConMultiples) {
+    alert(`❌ "${recetaConMultiples.nombre}" requiere receta y solo puede comprarse de a 1 unidad.`)
     return
   }
 
